@@ -1,0 +1,378 @@
+# NICE aligned treatment options for the therapy matcher.
+#
+# Each entry names the governing NICE guidance, its status and the criteria that NICE attaches.
+# Statuses: recommended, recommended_with_criteria, research_only, not_recommended, terminated,
+# check_appraisal (status could not be confirmed from the guidance text and must be checked).
+# Criteria keys understood by fovea.clinical.therapy:
+#   bcva_best / bcva_worst      best corrected acuity window as Snellen metres (6/12 means logMAR 0.30)
+#   min_cst_um                  minimum central retinal thickness at start of treatment
+#   no_permanent_foveal_damage  eye must not have permanent structural damage to the central fovea
+#   max_lesion_disc_areas       greatest linear dimension limit in disc areas
+#   recent_progression          evidence of recent presumed disease progression required
+#   lens_status                 list of permitted lens states
+#   requires_prior_failure      condition must have responded insufficiently to, or be unsuitable for, a named class
+# Verified against nice.org.uk on 2026-10-30 unless the note says otherwise.
+version: "2026.10.1"
+review_date: "2026-10-30"
+
+options:
+  # Neovascular AMD ---------------------------------------------------------------------
+  - id: wet_amd_ranibizumab
+    condition: wet_amd
+    agent: ranibizumab
+    guidance: TA155
+    title: Ranibizumab and pegaptanib for the treatment of age related macular degeneration
+    published: "2008"
+    status: recommended_with_criteria
+    line: first
+    criteria: {bcva_best: "6/12", bcva_worst: "6/96", no_permanent_foveal_damage: true, max_lesion_disc_areas: 12, recent_progression: true}
+    pivotal: ["MARINA", "ANCHOR"]
+    note: Pegaptanib is not recommended under TA155.
+  - id: wet_amd_aflibercept
+    condition: wet_amd
+    agent: aflibercept
+    guidance: TA294
+    title: Aflibercept solution for injection for treating wet age related macular degeneration
+    published: "2013-07-24"
+    status: recommended_with_criteria
+    line: first
+    criteria: {bcva_best: "6/12", bcva_worst: "6/96", no_permanent_foveal_damage: true, max_lesion_disc_areas: 12, recent_progression: true}
+    pivotal: ["VIEW 1", "VIEW 2"]
+    note: Recommended under the same criteria as ranibizumab in TA155, with the agreed commercial arrangement.
+  - id: wet_amd_brolucizumab
+    condition: wet_amd
+    agent: brolucizumab
+    guidance: TA672
+    title: Brolucizumab for treating wet age related macular degeneration
+    published: "2021-02-03"
+    status: recommended_with_criteria
+    line: first
+    criteria: {bcva_best: "6/12", bcva_worst: "6/96", no_permanent_foveal_damage: true, max_lesion_disc_areas: 12, recent_progression: true}
+    pivotal: ["HAWK", "HARRIER"]
+    note: Continue only while an adequate response is maintained. Choose the least expensive suitable option.
+  - id: wet_amd_faricimab
+    condition: wet_amd
+    agent: faricimab
+    guidance: TA800
+    title: Faricimab for treating wet age related macular degeneration
+    published: "2022-06-29"
+    status: recommended_with_criteria
+    line: first
+    criteria: {bcva_best: "6/12", bcva_worst: "6/96", no_permanent_foveal_damage: true, max_lesion_disc_areas: 12, recent_progression: true}
+    pivotal: ["TENAYA", "LUCERNE"]
+    note: Recommended with the commercial arrangement. Choose the least expensive suitable option.
+  - id: wet_amd_outside_window
+    condition: wet_amd
+    agent: anti VEGF (any appraised agent)
+    guidance: NG82
+    title: Age related macular degeneration (NICE guideline NG82)
+    published: "2018-01"
+    status: recommended_with_criteria
+    line: first
+    criteria: {outside_window: true}
+    pivotal: []
+    note: >
+      NG82 extends anti VEGF treatment to eyes with acuity better than 6/12, and for eyes at 6/96 or worse
+      it should be considered only when an overall benefit to visual function is expected, for example when
+      the affected eye is the better seeing eye.
+  - id: wet_amd_pdt
+    condition: wet_amd
+    agent: photodynamic therapy
+    guidance: NG82
+    title: Age related macular degeneration (NICE guideline NG82)
+    published: "2018-01"
+    status: research_only
+    line: second
+    criteria: {}
+    pivotal: []
+    note: Do not offer alone or as a first line adjunct; as a second line adjunct to anti VEGF only within a randomised trial.
+  - id: wet_amd_bevacizumab
+    condition: wet_amd
+    agent: bevacizumab
+    guidance: NG82
+    title: Age related macular degeneration (NICE guideline NG82)
+    published: "2018-01"
+    status: check_appraisal
+    line: first
+    criteria: {}
+    pivotal: ["CATT", "IVAN"]
+    note: Unlicensed for intraocular use in the UK. The prescriber takes full responsibility and informed consent must be documented.
+
+  # Diabetic macular oedema -------------------------------------------------------------
+  - id: dmo_ranibizumab
+    condition: dmo
+    agent: ranibizumab
+    guidance: TA274
+    title: Ranibizumab for treating diabetic macular oedema
+    published: "2013"
+    status: recommended_with_criteria
+    line: first
+    criteria: {min_cst_um: 400}
+    pivotal: ["RISE", "RIDE"]
+    note: Central retinal thickness of 400 micrometres or more at the start of treatment.
+  - id: dmo_aflibercept
+    condition: dmo
+    agent: aflibercept
+    guidance: TA346
+    title: Aflibercept for treating diabetic macular oedema
+    published: "2015-07-22"
+    status: recommended_with_criteria
+    line: first
+    criteria: {min_cst_um: 400}
+    pivotal: ["VIVID", "VISTA"]
+    note: Central retinal thickness of 400 micrometres or more at the start of treatment.
+  - id: dmo_faricimab
+    condition: dmo
+    agent: faricimab
+    guidance: TA799
+    title: Faricimab for treating diabetic macular oedema
+    published: "2022-06-29"
+    status: recommended_with_criteria
+    line: first
+    criteria: {min_cst_um: 400}
+    pivotal: ["YOSEMITE", "RHINE"]
+    note: Central retinal thickness of 400 micrometres or more at the start of treatment, with the commercial arrangement.
+  - id: dmo_brolucizumab
+    condition: dmo
+    agent: brolucizumab
+    guidance: TA820
+    title: Brolucizumab for treating diabetic macular oedema
+    published: "2022-08-30"
+    status: recommended_with_criteria
+    line: first
+    criteria: {min_cst_um: 400}
+    pivotal: ["KESTREL", "KITE"]
+    note: Central retinal thickness of 400 micrometres or more at the start of treatment, with the commercial arrangement.
+  - id: dmo_dexamethasone
+    condition: dmo
+    agent: dexamethasone implant
+    guidance: TA824
+    title: Dexamethasone intravitreal implant for treating diabetic macular oedema
+    published: "2022-09-14"
+    status: recommended_with_criteria
+    line: second
+    criteria: {requires_prior_failure: non_corticosteroid, lens_status: ["phakic", "pseudophakic"]}
+    pivotal: ["MEAD"]
+    note: >
+      For DMO that has not responded well enough to non corticosteroid therapy, or where it is unsuitable,
+      irrespective of phakic or pseudophakic lens status. TA824 updated and replaced TA349.
+  - id: dmo_fluocinolone
+    condition: dmo
+    agent: fluocinolone implant
+    guidance: TA953
+    title: Fluocinolone acetonide intravitreal implant for treating chronic diabetic macular oedema
+    published: "2024"
+    status: recommended_with_criteria
+    line: second
+    criteria: {requires_prior_failure: available_therapies, lens_status: ["phakic", "pseudophakic"]}
+    pivotal: ["FAME"]
+    note: >
+      Chronic DMO insufficiently responsive to available therapies, irrespective of lens type, with the commercial
+      arrangement. TA953 reviewed TA613 (phakic eyes) and merged it with TA301 (pseudophakic eyes); check the
+      appraisal for the exact wording and date.
+
+  # Retinal vein occlusion ---------------------------------------------------------------
+  - id: rvo_ranibizumab
+    condition: rvo
+    agent: ranibizumab
+    guidance: TA283
+    title: Ranibizumab for treating visual impairment caused by macular oedema secondary to retinal vein occlusion
+    published: "2013"
+    status: check_appraisal
+    line: first
+    criteria: {}
+    pivotal: ["BRAVO", "CRUISE"]
+    note: Criteria differ for central and branch occlusion; check the appraisal.
+  - id: rvo_aflibercept_crvo
+    condition: rvo
+    agent: aflibercept
+    guidance: TA305
+    title: Aflibercept for treating visual impairment caused by macular oedema secondary to central retinal vein occlusion
+    published: "2014"
+    status: check_appraisal
+    line: first
+    criteria: {subtype: crvo}
+    pivotal: ["COPERNICUS", "GALILEO"]
+    note: Central retinal vein occlusion; check the appraisal for the commercial arrangement.
+  - id: rvo_aflibercept_brvo
+    condition: rvo
+    agent: aflibercept
+    guidance: TA409
+    title: Aflibercept for treating visual impairment caused by macular oedema after branch retinal vein occlusion
+    published: "2016-09-28"
+    status: check_appraisal
+    line: first
+    criteria: {subtype: brvo}
+    pivotal: ["VIBRANT"]
+    note: Branch retinal vein occlusion; check the appraisal for the laser related condition.
+  - id: rvo_faricimab
+    condition: rvo
+    agent: faricimab
+    guidance: TA1004
+    title: Faricimab for treating visual impairment caused by macular oedema after retinal vein occlusion
+    published: "2024-09-11"
+    status: recommended
+    line: first
+    criteria: {}
+    pivotal: ["BALATON", "COMINO"]
+    note: Recommended within its marketing authorisation for central or branch occlusion, by cost comparison with aflibercept.
+  - id: rvo_dexamethasone
+    condition: rvo
+    agent: dexamethasone implant
+    guidance: TA229
+    title: Dexamethasone intravitreal implant for the treatment of macular oedema secondary to retinal vein occlusion
+    published: "2011-07-27"
+    status: check_appraisal
+    line: first
+    criteria: {}
+    pivotal: ["GENEVA"]
+    note: Criteria differ for central and branch occlusion; check the appraisal.
+
+  # Myopic choroidal neovascularisation ----------------------------------------------------
+  - id: mcnv_ranibizumab
+    condition: myopic_cnv
+    agent: ranibizumab
+    guidance: TA298
+    title: Ranibizumab for treating choroidal neovascularisation associated with pathological myopia
+    published: "2013"
+    status: check_appraisal
+    line: first
+    criteria: {}
+    pivotal: ["RADIANCE"]
+    note: Check the appraisal for the commercial arrangement.
+  - id: mcnv_aflibercept
+    condition: myopic_cnv
+    agent: aflibercept
+    guidance: TA486
+    title: Aflibercept for treating choroidal neovascularisation
+    published: "2017-11-01"
+    status: check_appraisal
+    line: first
+    criteria: {}
+    pivotal: ["MYRROR"]
+    note: Check the appraisal for the commercial arrangement.
+
+  # Glaucoma and ocular hypertension ---------------------------------------------------
+  - id: oht_slt
+    condition: oht
+    agent: 360 degree selective laser trabeculoplasty
+    guidance: NG81
+    title: Glaucoma diagnosis and management (NICE guideline NG81, 2022 update)
+    published: "2017-11, updated 2022-01"
+    status: recommended_with_criteria
+    line: first
+    criteria: {min_iop_mmhg: 24, not_pigment_dispersion: true}
+    pivotal: ["LiGHT"]
+    note: First treatment for ocular hypertension at risk of visual impairment in the person's lifetime; generic prostaglandin analogue drops when SLT is unsuitable or declined.
+  - id: oht_pga
+    condition: oht
+    agent: generic prostaglandin analogue
+    guidance: NG81
+    title: Glaucoma diagnosis and management (NICE guideline NG81, 2022 update)
+    published: "2017-11, updated 2022-01"
+    status: recommended_with_criteria
+    line: first
+    criteria: {min_iop_mmhg: 24}
+    pivotal: ["OHTS"]
+    note: Offer when 360 degree SLT is not suitable or the person prefers not to have it. Demonstrate and check instillation technique.
+  - id: coag_slt
+    condition: coag
+    agent: 360 degree selective laser trabeculoplasty
+    guidance: NG81
+    title: Glaucoma diagnosis and management (NICE guideline NG81, 2022 update)
+    published: "2017-11, updated 2022-01"
+    status: recommended_with_criteria
+    line: first
+    criteria: {not_pigment_dispersion: true}
+    pivotal: ["LiGHT"]
+    note: First treatment for newly diagnosed COAG, except where associated with pigment dispersion syndrome. A repeat 360 degree SLT is at consultant discretion.
+  - id: coag_pga
+    condition: coag
+    agent: generic prostaglandin analogue
+    guidance: NG81
+    title: Glaucoma diagnosis and management (NICE guideline NG81, 2022 update)
+    published: "2017-11, updated 2022-01"
+    status: recommended_with_criteria
+    line: first
+    criteria: {}
+    pivotal: ["UKGTS", "EMGT"]
+    note: Offer when 360 degree SLT is not suitable or declined.
+  - id: coag_surgery
+    condition: coag
+    agent: glaucoma surgery with augmentation
+    guidance: NG81
+    title: Glaucoma diagnosis and management (NICE guideline NG81)
+    published: "2017-11, updated 2022-01"
+    status: check_appraisal
+    line: second
+    criteria: {stage: advanced}
+    pivotal: []
+    note: Surgery is discussed for advanced COAG; check NG81 for the exact wording.
+
+  # Uveitis, ocular surface and other -------------------------------------------------
+  - id: uveitis_adalimumab
+    condition: uveitis
+    agent: adalimumab
+    guidance: TA460
+    title: Adalimumab and dexamethasone for treating non infectious uveitis
+    published: "2017-07-26"
+    status: check_appraisal
+    line: second
+    criteria: {}
+    pivotal: ["VISUAL I", "VISUAL II"]
+    note: Criteria include inadequate response to, or intolerance of, immunosuppressants; check the appraisal.
+  - id: uveitis_dexamethasone
+    condition: uveitis
+    agent: dexamethasone implant
+    guidance: TA460
+    title: Adalimumab and dexamethasone for treating non infectious uveitis
+    published: "2017-07-26"
+    status: check_appraisal
+    line: first
+    criteria: {}
+    pivotal: ["HURON"]
+    note: Non infectious uveitis of the posterior segment; check the appraisal.
+  - id: uveitis_fluocinolone
+    condition: uveitis
+    agent: fluocinolone implant
+    guidance: TA590
+    title: Fluocinolone acetonide intravitreal implant for treating recurrent non infectious uveitis
+    published: "2019"
+    status: recommended
+    line: second
+    criteria: {}
+    pivotal: []
+    note: Preventing relapse in recurrent non infectious uveitis affecting the posterior segment, within the marketing authorisation and the commercial arrangement.
+  - id: dry_eye_ciclosporin
+    condition: dry_eye
+    agent: ciclosporin eye drops
+    guidance: TA369
+    title: Ciclosporin for treating dry eye disease that has not improved despite treatment with artificial tears
+    published: "2015-12-16"
+    status: check_appraisal
+    line: second
+    criteria: {}
+    pivotal: []
+    note: Severe keratitis in dry eye disease not improved by artificial tears; check the appraisal.
+  - id: lscd_holoclar
+    condition: limbal_stem_cell
+    agent: holoclar
+    guidance: TA467
+    title: Holoclar for treating limbal stem cell deficiency after eye burns
+    published: "2017-08-16"
+    status: check_appraisal
+    line: second
+    criteria: {}
+    pivotal: []
+    note: Check the appraisal for the criteria.
+  - id: uveal_melanoma_tebentafusp
+    condition: uveal_melanoma
+    agent: tebentafusp
+    guidance: TA1027
+    title: Tebentafusp for treating advanced uveal melanoma
+    published: "2025-01-09"
+    status: check_appraisal
+    line: first
+    criteria: {}
+    pivotal: []
+    note: Advanced uveal melanoma; check the appraisal.

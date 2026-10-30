@@ -1,0 +1,41 @@
+# Diabetic eye screening grading, glaucoma thresholds and hydroxychloroquine monitoring rules.
+version: "2026.10.1"
+review_date: "2026-10-30"
+
+diabetic_eye_screening:
+  source: NHS Diabetic Eye Screening Programme grading criteria and pathway guidance (gov.uk, OGL v3)
+  # Order of urgency for the eye needing action most urgently, as published by the programme.
+  urgency_order: ["R3AM1", "R3AM0", "R3SM1", "R2M1", "R1M1", "R2M0", "U", "R3SM0", "R1M0", "R0M0"]
+  outcomes:
+    R0M0: {pathway: "Routine digital screening recall. People aged 12 and over with two consecutive negative results are screened every 24 months; otherwise every 12 months.", referable: false}
+    R1M0: {pathway: "Routine digital screening recall every 12 months.", referable: false}
+    R1M1: {pathway: "Digital surveillance within the screening programme or referral, according to local pathway.", referable: false}
+    R2M0: {pathway: "Referable. Refer to the hospital eye service, or digital surveillance where the local pathway allows.", referable: true}
+    R2M1: {pathway: "Referable. Refer to the hospital eye service.", referable: true}
+    R3AM0: {pathway: "Referable with the highest priority. Urgent referral to the hospital eye service.", referable: true, urgent: true}
+    R3AM1: {pathway: "Referable with the highest priority. Urgent referral to the hospital eye service.", referable: true, urgent: true}
+    R3SM0: {pathway: "Stable treated proliferative retinopathy. Follow the local R3S surveillance or referral pathway.", referable: true}
+    R3SM1: {pathway: "Stable treated proliferative retinopathy with maculopathy. Refer to the hospital eye service.", referable: true}
+    U: {pathway: "Ungradable. Repeat imaging on another date; if digital imaging is not possible, slit lamp biomicroscopy surveillance.", referable: false}
+
+glaucoma:
+  source: NICE NG81 (2017, updated 2022)
+  oht_treatment_iop_mmhg: 24
+  referral_note: "Refer people with IOP of 24 mmHg or more on repeat Goldmann type tonometry, with or without other signs, according to NG81."
+  # Target pressure reductions and ceilings are local protocol defaults, not NICE values. They must be agreed
+  # by the glaucoma service; NICE does not set numeric targets.
+  target_reduction_percent: {early: 20, moderate: 30, advanced: 40, unknown: 25}
+  target_ceiling_mmhg: {early: 18, moderate: 15, advanced: 12, unknown: 18}
+  progression_rate_db_per_year: {slow: -0.5, moderate: -1.0, fast: -2.0}
+  blindness_md_threshold_db: -25.0
+
+hydroxychloroquine:
+  source: Royal College of Ophthalmologists. Hydroxychloroquine and chloroquine retinopathy recommendations on monitoring (December 2020)
+  hcq_max_mg_per_kg_day: 5.0
+  cq_max_mg_per_kg_day: 2.3
+  egfr_threshold: 60
+  start_years_standard: 5
+  start_years_with_risk: 1
+  start_years_chloroquine: 1
+  tests: ["SD OCT", "widefield fundus autofluorescence", "automated visual fields (10 2 or 30 2) only if imaging is abnormal"]
+  baseline: "Baseline testing is no longer recommended for new starters."

@@ -1,0 +1,144 @@
+# Eye emergencies recognised before retrieval. Patterns are case insensitive regular expressions
+# evaluated against the redacted question and free text context. A rule fires when any
+# "any" pattern matches and, if "all" is present, every "all" pattern also matches.
+# Actions summarise widely published UK emergency eye care practice and must be confirmed
+# against local emergency eye care protocols before clinical use.
+version: "2026.10.1"
+review_date: "2026-10-30"
+
+emergencies:
+  - id: acute_angle_closure
+    name: Suspected acute angle closure
+    urgency: same_day_emergency
+    any:
+      - "acute angle closure"
+      - "(red|painful) eye.{0,60}(halo|haloes|halos)"
+      - "(halo|haloes|halos).{0,60}(red|painful) eye"
+      - "(fixed|mid ?dilated).{0,30}pupil.{0,80}(pain|iop|pressure)"
+      - "iop (of )?(4\\d|5\\d|6\\d)"
+      - "(eye pain|painful eye).{0,80}(vomit|nausea)"
+    action: >
+      Treat as an emergency. Arrange same day assessment by ophthalmology. Lowering intraocular pressure
+      should start without delay under local protocol, which commonly includes systemic and topical pressure
+      lowering treatment and miotics, followed by laser iridotomy. Do not wait for retrieval or a scheduled clinic.
+    guidance: Local emergency eye care protocol; Royal College of Ophthalmologists emergency eye care guidance
+  - id: giant_cell_arteritis
+    name: Suspected giant cell arteritis with visual symptoms
+    urgency: same_day_emergency
+    any:
+      - "giant cell arteritis"
+      - "temporal arteritis"
+      - "jaw claudication"
+      - "scalp tenderness"
+      - "(sudden|transient).{0,40}(loss of vision|visual loss|vision loss).{0,120}(headache|over 50|aged [5-9]\\d)"
+    action: >
+      Treat as a sight threatening emergency. Visual symptoms with suspected giant cell arteritis need same day
+      specialist assessment and urgent corticosteroid treatment according to local protocol; do not delay
+      treatment for a biopsy or ultrasound.
+    guidance: Local giant cell arteritis pathway; British Society for Rheumatology guideline
+  - id: central_retinal_artery_occlusion
+    name: Suspected central retinal artery occlusion
+    urgency: immediate_stroke_pathway
+    any:
+      - "central retinal artery occlusion"
+      - "\\bcrao\\b"
+      - "cherry red spot"
+      - "sudden painless (complete |total )?(loss of vision|visual loss|vision loss)"
+    action: >
+      Treat as an ocular stroke. Refer immediately through the local stroke pathway for assessment and
+      vascular risk management, and exclude giant cell arteritis in people over 50.
+    guidance: Local stroke pathway; Royal College of Ophthalmologists retinal artery occlusion guidance
+  - id: retinal_detachment
+    name: Suspected retinal detachment
+    urgency: same_day_emergency
+    any:
+      - "retinal detachment"
+      - "(curtain|shadow|veil).{0,60}(vision|visual field|field)"
+      - "(flashes|photopsia).{0,60}(floaters|shower)"
+      - "(new|sudden).{0,30}floaters.{0,60}(flash|curtain|shadow)"
+    action: >
+      Arrange same day ophthalmology assessment. A macula on detachment is time critical; advise the person
+      to avoid strenuous activity until seen.
+    guidance: Local emergency eye care protocol
+  - id: endophthalmitis
+    name: Suspected endophthalmitis after injection or surgery
+    urgency: same_day_emergency
+    any:
+      - "endophthalmitis"
+      - "hypopyon"
+      - "(pain|painful|red|redness|reduced vision|blurred).{0,80}(after|following|post).{0,20}(injection|intravitreal|cataract|surgery|operation)"
+      - "(after|following|post).{0,20}(injection|intravitreal|cataract surgery).{0,80}(pain|painful|worse vision|reduced vision)"
+    action: >
+      Same day ophthalmology assessment. Suspected endophthalmitis needs urgent vitreous sampling and
+      intravitreal antibiotics according to local protocol.
+    guidance: Local endophthalmitis protocol; Royal College of Ophthalmologists intravitreal injection guidance
+  - id: chemical_injury
+    name: Chemical eye injury
+    urgency: immediate
+    any:
+      - "chemical (injury|burn|splash)"
+      - "(alkali|acid|bleach|cement|lime|oven cleaner|drain cleaner).{0,40}(eye|splash|burn)"
+      - "eye.{0,40}(alkali|acid|bleach|cement)"
+    action: >
+      Start irrigation immediately and continue until the ocular surface pH is neutral, then arrange
+      emergency ophthalmology assessment. Do not delay irrigation to search for information.
+    guidance: Local emergency eye care protocol
+  - id: penetrating_injury
+    name: Suspected penetrating eye injury or globe rupture
+    urgency: immediate
+    any:
+      - "penetrating (eye )?injury"
+      - "globe rupture"
+      - "ruptured globe"
+      - "intraocular foreign body"
+      - "(hammer|chisel|metal on metal|grinding).{0,60}(eye|vision)"
+    action: >
+      Protect the eye with a rigid shield without pressure, keep the person nil by mouth and refer
+      immediately to emergency ophthalmology. Do not remove embedded objects.
+    guidance: Local emergency eye care protocol
+  - id: orbital_cellulitis
+    name: Suspected orbital cellulitis
+    urgency: same_day_emergency
+    any:
+      - "orbital cellulitis"
+      - "(proptosis|painful eye movements|restricted eye movements).{0,80}(fever|swollen|swelling|eyelid)"
+      - "(eyelid|periorbital) swelling.{0,80}(proptosis|double vision|reduced vision|painful eye movements)"
+    action: >
+      Same day emergency assessment by ophthalmology and ENT, with intravenous antibiotics and imaging
+      according to local protocol.
+    guidance: Local orbital cellulitis pathway
+  - id: microbial_keratitis
+    name: Suspected microbial keratitis
+    urgency: same_day_emergency
+    any:
+      - "microbial keratitis"
+      - "acanthamoeba"
+      - "corneal ulcer"
+      - "contact lens.{0,80}(painful|red eye|white spot|infiltrate|photophobia)"
+    action: >
+      Same day ophthalmology assessment for corneal scrapes and intensive topical antimicrobial treatment.
+      Advise the person to stop contact lens wear and bring the lenses and case.
+    guidance: Local emergency eye care protocol
+  - id: raised_intracranial_pressure
+    name: Possible papilloedema or raised intracranial pressure
+    urgency: same_day_emergency
+    any:
+      - "papilloedema"
+      - "papilledema"
+      - "swollen optic dis(c|k)s?.{0,60}headache"
+      - "headache.{0,60}swollen optic dis(c|k)"
+    action: >
+      Same day medical assessment with blood pressure measurement and neuroimaging according to local
+      protocol. Bilateral disc swelling with headache needs exclusion of raised intracranial pressure.
+    guidance: Local neuro ophthalmology pathway
+  - id: pupil_involving_third_nerve
+    name: Pupil involving third nerve palsy
+    urgency: immediate
+    any:
+      - "(third|3rd|oculomotor) nerve palsy.{0,80}(dilated|pupil)"
+      - "(dilated|blown) pupil.{0,80}(ptosis|double vision|diplopia)"
+      - "ptosis.{0,60}(dilated|blown) pupil"
+    action: >
+      Treat as a possible compressive aneurysm. Arrange immediate neurovascular imaging through the
+      emergency pathway.
+    guidance: Local neurosurgical and neuro ophthalmology pathway

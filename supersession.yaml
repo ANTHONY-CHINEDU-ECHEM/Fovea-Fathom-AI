@@ -1,0 +1,24 @@
+# Guidance currency graph. An "old" identifier found in a document id, title or text is demoted
+# in ranking, labelled in the answer and shown as superseded in the interface.
+version: "2026.10.1"
+review_date: "2026-10-30"
+
+superseded:
+  - old: TA349
+    new: TA824
+    note: TA824 (September 2022) updated and replaced TA349 for dexamethasone implant in diabetic macular oedema.
+  - old: TA301
+    new: TA953
+    note: TA953 reviewed fluocinolone acetonide for chronic diabetic macular oedema and merged the TA301 recommendation for pseudophakic eyes.
+  - old: TA613
+    new: TA953
+    note: TA953 reviewed TA613 (phakic eyes) for fluocinolone acetonide in chronic diabetic macular oedema.
+  - old: CG85
+    new: NG81
+    note: NG81 (2017, updated 2022) replaced CG85 on glaucoma diagnosis and management.
+  - old: NG81 2017 first line drops
+    new: NG81 2022 update
+    note: The 2022 update of NG81 made 360 degree SLT the first treatment for newly diagnosed OHT and COAG in place of prostaglandin analogue drops.
+  - old: R0M0 annual recall
+    new: two yearly recall for low risk
+    note: The NHS diabetic eye screening programme screens people aged 12 and over with two consecutive negative results every 24 months.

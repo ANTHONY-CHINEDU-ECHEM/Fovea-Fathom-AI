@@ -1,0 +1,209 @@
+# Medication and procedure safety screen for eye treatment.
+#
+# A rule fires when every populated "when" key is satisfied:
+#   planned_any       planned medicine, drug class or procedure (any match)
+#   current_any       current medicine or drug class (any match)
+#   conditions_any    condition terms found in conditions or the question (any match)
+#   allergies_any     allergy terms (any match)
+#   also_current_any  a second current medicine or class that must also be present
+#   lens_status_any   lens status of the treated eye
+#   age_below / egfr_below / pregnant
+# Severity: contraindication, major, caution, monitor.
+# References name the SmPC section or guidance; the screen supplements and never replaces the
+# SmPC, the BNF and a pharmacist.
+version: "2026.10.1"
+review_date: "2026-10-30"
+
+rules:
+  - id: topical_beta_blocker_asthma
+    title: Topical beta blocker with asthma or reactive airways disease
+    severity: contraindication
+    when: {planned_any: [beta_blocker_topical], conditions_any: [asthma, reactive airways, bronchospasm]}
+    message: Topical beta blockers are absorbed systemically and can provoke bronchospasm; they are contraindicated in asthma.
+    reference: Timolol and betaxolol eye drops SmPC section 4.3
+  - id: topical_beta_blocker_copd
+    title: Topical beta blocker with severe COPD
+    severity: major
+    when: {planned_any: [beta_blocker_topical], conditions_any: [copd, chronic obstructive, emphysema]}
+    message: Severe chronic obstructive pulmonary disease is a contraindication in the SmPC; consider an alternative class.
+    reference: Timolol eye drops SmPC section 4.3
+  - id: topical_beta_blocker_conduction
+    title: Topical beta blocker with bradycardia, heart block or uncontrolled heart failure
+    severity: contraindication
+    when: {planned_any: [beta_blocker_topical], conditions_any: [bradycardia, heart block, sick sinus, cardiogenic shock, uncontrolled heart failure, decompensated heart failure]}
+    message: Sinus bradycardia, second or third degree heart block and overt cardiac failure are contraindications.
+    reference: Timolol eye drops SmPC section 4.3
+  - id: topical_beta_blocker_rate_limiting
+    title: Topical beta blocker with verapamil or diltiazem
+    severity: major
+    when: {planned_any: [beta_blocker_topical], current_any: [rate_limiting_ccb]}
+    message: Additive effects on atrioventricular conduction and heart rate; risk of bradycardia and hypotension.
+    reference: Timolol eye drops SmPC section 4.5; BNF interactions
+  - id: topical_beta_blocker_systemic
+    title: Topical beta blocker with a systemic beta blocker
+    severity: caution
+    when: {planned_any: [beta_blocker_topical], current_any: [beta_blocker_systemic]}
+    message: Additive systemic beta blockade with reduced pressure lowering benefit; check pulse and consider another class.
+    reference: Timolol eye drops SmPC section 4.4
+  - id: cai_sulfonamide_allergy
+    title: Carbonic anhydrase inhibitor with sulfonamide hypersensitivity
+    severity: contraindication
+    when: {planned_any: [carbonic_anhydrase_inhibitor, carbonic_anhydrase_inhibitor_systemic], allergies_any: [sulfonamide, sulphonamide, sulfa, co-trimoxazole]}
+    message: Dorzolamide, brinzolamide and acetazolamide are sulfonamides; hypersensitivity to sulfonamides is a contraindication.
+    reference: Dorzolamide, brinzolamide and acetazolamide SmPC section 4.3
+  - id: acetazolamide_renal
+    title: Acetazolamide with severe renal impairment
+    severity: contraindication
+    when: {planned_any: [acetazolamide], egfr_below: 30}
+    message: Severe renal impairment is a contraindication; acetazolamide also needs dose review in lesser renal impairment.
+    reference: Acetazolamide SmPC sections 4.2 and 4.3
+  - id: topical_cai_renal
+    title: Topical carbonic anhydrase inhibitor with severe renal impairment
+    severity: major
+    when: {planned_any: [carbonic_anhydrase_inhibitor], egfr_below: 30}
+    message: Dorzolamide and brinzolamide are not recommended in severe renal impairment (creatinine clearance below 30 ml/min).
+    reference: Dorzolamide and brinzolamide SmPC section 4.3
+  - id: brimonidine_infant
+    title: Brimonidine in children under two years
+    severity: contraindication
+    when: {planned_any: [alpha_agonist], age_below: 2}
+    message: Brimonidine is contraindicated in neonates and infants under two years because of central nervous system depression.
+    reference: Brimonidine eye drops SmPC section 4.3
+  - id: brimonidine_maoi
+    title: Brimonidine with a monoamine oxidase inhibitor
+    severity: contraindication
+    when: {planned_any: [alpha_agonist], current_any: [maoi]}
+    message: Concurrent monoamine oxidase inhibitor treatment is a contraindication.
+    reference: Brimonidine eye drops SmPC section 4.3
+  - id: pga_inflammation
+    title: Prostaglandin analogue with uveitis, cystoid macular oedema risk or herpetic keratitis
+    severity: caution
+    when: {planned_any: [prostaglandin_analogue], conditions_any: [uveitis, iritis, cystoid macular oedema, herpetic keratitis, herpes simplex keratitis, aphakia, torn posterior capsule]}
+    message: Prostaglandin analogues should be used with caution in intraocular inflammation, eyes at risk of cystoid macular oedema and a history of herpetic keratitis.
+    reference: Latanoprost SmPC section 4.4
+  - id: pga_pregnancy
+    title: Prostaglandin analogue in pregnancy
+    severity: caution
+    when: {planned_any: [prostaglandin_analogue], pregnant: true}
+    message: Prostaglandin analogues should not be used in pregnancy unless clearly necessary; discuss alternatives including SLT.
+    reference: Latanoprost SmPC section 4.6
+  - id: miotic_uveitis
+    title: Pilocarpine with active intraocular inflammation
+    severity: contraindication
+    when: {planned_any: [miotic], conditions_any: [uveitis, iritis]}
+    message: Miotics are contraindicated where pupillary constriction is undesirable, such as acute iritis.
+    reference: Pilocarpine SmPC section 4.3
+  - id: anti_vegf_infection
+    title: Intravitreal injection with ocular or periocular infection
+    severity: contraindication
+    when: {planned_any: [anti_vegf, intravitreal_steroid, intravitreal_injection], conditions_any: [conjunctivitis, blepharitis active, periocular infection, ocular infection, keratitis, endophthalmitis]}
+    message: Active or suspected ocular or periocular infection is a contraindication to intravitreal injection; treat the infection first.
+    reference: Aflibercept, ranibizumab and faricimab SmPC section 4.3
+  - id: anti_vegf_inflammation
+    title: Anti VEGF with active intraocular inflammation
+    severity: contraindication
+    when: {planned_any: [anti_vegf], conditions_any: [active intraocular inflammation, uveitis, iritis, vitritis]}
+    message: Active severe intraocular inflammation is a contraindication to anti VEGF injection.
+    reference: Aflibercept and faricimab SmPC section 4.3
+  - id: brolucizumab_vasculitis
+    title: Brolucizumab with previous intraocular inflammation or retinal vasculitis
+    severity: major
+    when: {planned_any: [brolucizumab], conditions_any: [retinal vasculitis, retinal vascular occlusion, intraocular inflammation, uveitis]}
+    message: Retinal vasculitis and retinal vascular occlusion have been reported, typically with intraocular inflammation; brolucizumab should be stopped in patients who develop these events and used with caution where there is a history.
+    reference: Brolucizumab SmPC section 4.4
+  - id: anti_vegf_pregnancy
+    title: Anti VEGF injection in pregnancy
+    severity: caution
+    when: {planned_any: [anti_vegf], pregnant: true}
+    message: Anti VEGF agents are not recommended in pregnancy unless the benefit outweighs the risk; specialist discussion is needed.
+    reference: Aflibercept and ranibizumab SmPC section 4.6
+  - id: anti_vegf_arterial_events
+    title: Anti VEGF with a recent arterial thromboembolic event
+    severity: caution
+    when: {planned_any: [anti_vegf], conditions_any: [recent stroke, recent myocardial infarction, transient ischaemic attack, tia]}
+    message: There is a theoretical risk of arterial thromboembolic events after intravitreal anti VEGF; patients with recent events were excluded from pivotal trials.
+    reference: Ranibizumab and aflibercept SmPC section 4.4
+  - id: dexamethasone_capsule
+    title: Dexamethasone implant with aphakia and ruptured posterior capsule
+    severity: contraindication
+    when: {planned_any: [dexamethasone implant], conditions_any: [ruptured posterior capsule, posterior capsule rupture, anterior chamber intraocular lens, iris fixated lens, aphakia]}
+    message: Aphakic eyes with a ruptured posterior lens capsule and eyes with an anterior chamber or iris fixated lens with capsule rupture are contraindications because of implant migration.
+    reference: Dexamethasone intravitreal implant SmPC section 4.3
+  - id: dexamethasone_glaucoma
+    title: Dexamethasone implant with advanced glaucoma
+    severity: contraindication
+    when: {planned_any: [dexamethasone implant], conditions_any: [advanced glaucoma, uncontrolled glaucoma]}
+    message: Advanced glaucoma inadequately controlled by medicines alone is a contraindication; intraocular pressure rises are common after the implant.
+    reference: Dexamethasone intravitreal implant SmPC sections 4.3 and 4.4
+  - id: fluocinolone_glaucoma
+    title: Fluocinolone implant with pre existing glaucoma
+    severity: contraindication
+    when: {planned_any: [fluocinolone implant], conditions_any: [glaucoma, coag, poag, ocular hypertension]}
+    message: Pre existing glaucoma is a contraindication for the fluocinolone acetonide implant for DMO; check the SmPC for the indication being treated.
+    reference: Fluocinolone acetonide intravitreal implant SmPC section 4.3
+  - id: intravitreal_steroid_phakic
+    title: Intravitreal corticosteroid in a phakic eye
+    severity: monitor
+    when: {planned_any: [intravitreal_steroid], lens_status_any: [phakic]}
+    message: Cataract formation is expected after intravitreal corticosteroid in phakic eyes; counsel the patient and plan monitoring.
+    reference: Dexamethasone and fluocinolone implant SmPC section 4.8
+  - id: steroid_iop
+    title: Corticosteroid with glaucoma or ocular hypertension
+    severity: monitor
+    when: {planned_any: [topical_steroid, intravitreal_steroid, systemic_steroid], conditions_any: [glaucoma, ocular hypertension, coag, poag, steroid responder]}
+    message: Corticosteroids can raise intraocular pressure; monitor pressure and the optic nerve.
+    reference: Prednisolone acetate and dexamethasone implant SmPC section 4.4
+  - id: cataract_alpha_blocker
+    title: Cataract surgery with a systemic alpha one blocker
+    severity: major
+    when: {planned_any: [cataract_surgery], current_any: [alpha_blocker_systemic]}
+    message: Tamsulosin and other alpha one blockers cause intraoperative floppy iris syndrome; tell the surgeon. Stopping the drug before surgery does not reliably prevent it.
+    reference: Tamsulosin SmPC section 4.4; MHRA Drug Safety Update
+  - id: procedure_anticoagulant
+    title: Eye procedure in a person taking an anticoagulant or antiplatelet
+    severity: caution
+    when: {planned_any: [cataract_surgery, intravitreal_injection, anti_vegf, intravitreal_steroid, trabeculectomy, vitrectomy], current_any: [anticoagulant, antiplatelet]}
+    message: Anticoagulants and antiplatelets are not routinely stopped for intravitreal injection or cataract surgery; check INR where relevant and the local anaesthetic block policy.
+    reference: Royal College of Ophthalmologists guidance; local perioperative protocol
+  - id: hcq_tamoxifen
+    title: Hydroxychloroquine with tamoxifen
+    severity: monitor
+    when: {current_any: [aminoquinoline], also_current_any: [serm]}
+    message: Concomitant tamoxifen is a risk factor for hydroxychloroquine retinopathy; annual monitoring should start after one year of therapy.
+    reference: Royal College of Ophthalmologists hydroxychloroquine and chloroquine retinopathy monitoring guideline (2020)
+  - id: topiramate_angle_closure
+    title: Topiramate and secondary angle closure
+    severity: major
+    when: {current_any: [topiramate], conditions_any: [eye pain, angle closure, narrow angles, myopic shift, blurred vision, red eye]}
+    message: Topiramate can cause acute myopia with secondary angle closure, usually within the first month; stop the drug urgently under specialist advice and treat the angle closure.
+    reference: Topiramate SmPC section 4.4
+  - id: anticholinergic_narrow_angle
+    title: Anticholinergic or tricyclic medicine with narrow angles
+    severity: caution
+    when: {current_any: [anticholinergic, tricyclic], conditions_any: [narrow angles, angle closure, primary angle closure suspect, pacs]}
+    message: Medicines with anticholinergic activity can precipitate angle closure in anatomically narrow angles.
+    reference: Oxybutynin and amitriptyline SmPC section 4.4
+  - id: ethambutol_monitoring
+    title: Ethambutol optic neuropathy
+    severity: monitor
+    when: {current_any: [ethambutol]}
+    message: Ethambutol can cause optic neuropathy; visual acuity and colour vision should be checked before and during treatment, with prompt review of any visual change.
+    reference: Ethambutol SmPC section 4.4
+  - id: amiodarone_optic
+    title: Amiodarone ocular effects
+    severity: monitor
+    when: {current_any: [amiodarone]}
+    message: Amiodarone causes corneal microdeposits and, rarely, optic neuropathy; investigate any new visual loss promptly.
+    reference: Amiodarone SmPC section 4.4
+  - id: vigabatrin_fields
+    title: Vigabatrin visual field loss
+    severity: monitor
+    when: {current_any: [vigabatrin]}
+    message: Vigabatrin causes irreversible concentric visual field constriction; visual field testing is recommended before and during treatment where feasible.
+    reference: Vigabatrin SmPC section 4.4
+  - id: semaglutide_naion
+    title: Semaglutide and non arteritic anterior ischaemic optic neuropathy
+    severity: monitor
+    when: {current_any: [glp1_agonist], conditions_any: [sudden visual loss, optic neuropathy, naion, ischaemic optic neuropathy]}
+    message: Non arteritic anterior ischaemic optic neuropathy has been identified as a very rare adverse reaction to semaglutide; review the medicine if it is confirmed.
+    reference: EMA PRAC review 2025 and current MHRA advice (check before use)

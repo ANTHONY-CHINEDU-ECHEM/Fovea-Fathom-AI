@@ -1,0 +1,43 @@
+# Intravitreal regimens for the treat and extend planner.
+#
+# Values summarise each SmPC as configured local protocol defaults. They must be checked
+# against the current SmPC and the local medical retina protocol before clinical use, and the
+# planner always labels its output with this file's version and review date.
+#   loading_doses       number of loading injections
+#   loading_interval    weeks between loading injections
+#   min_interval        shortest permitted interval after loading (weeks)
+#   max_interval        longest permitted interval (weeks)
+#   extend_step         weeks added when the eye is dry and stable
+#   shorten_step        weeks removed when disease activity recurs
+version: "2026.10.1"
+review_date: "2026-10-30"
+
+regimens:
+  aflibercept:
+    wet_amd: {loading_doses: 3, loading_interval: 4, min_interval: 8, max_interval: 16, extend_step: 2, shorten_step: 2,
+              note: "Three monthly loading doses then every two months in year one; treat and extend thereafter."}
+    dmo: {loading_doses: 5, loading_interval: 4, min_interval: 8, max_interval: 16, extend_step: 2, shorten_step: 2,
+          note: "Five monthly loading doses then every two months; treat and extend after the first year."}
+    rvo: {loading_doses: 3, loading_interval: 4, min_interval: 4, max_interval: 16, extend_step: 2, shorten_step: 2,
+          note: "Monthly until maximum acuity and no activity, then treat and extend."}
+    myopic_cnv: {loading_doses: 1, loading_interval: 4, min_interval: 4, max_interval: 12, extend_step: 4, shorten_step: 4,
+                 note: "Single injection then further doses for persistent or recurrent activity."}
+  ranibizumab:
+    wet_amd: {loading_doses: 3, loading_interval: 4, min_interval: 4, max_interval: 16, extend_step: 2, shorten_step: 2,
+              note: "Monthly until maximum acuity or no activity, then treat and extend by up to two weeks at a time."}
+    dmo: {loading_doses: 3, loading_interval: 4, min_interval: 4, max_interval: 16, extend_step: 4, shorten_step: 4,
+          note: "Monthly until stable, then treat and extend by up to one month at a time."}
+    rvo: {loading_doses: 3, loading_interval: 4, min_interval: 4, max_interval: 16, extend_step: 4, shorten_step: 4,
+          note: "Monthly until stable, then treat and extend by up to one month at a time."}
+  faricimab:
+    wet_amd: {loading_doses: 4, loading_interval: 4, min_interval: 8, max_interval: 16, extend_step: 4, shorten_step: 4,
+              note: "Four loading doses every four weeks, then intervals of up to sixteen weeks adjusted by activity."}
+    dmo: {loading_doses: 4, loading_interval: 4, min_interval: 4, max_interval: 16, extend_step: 4, shorten_step: 4,
+          note: "At least four monthly doses, then treat and extend in steps of up to four weeks to a maximum of sixteen."}
+    rvo: {loading_doses: 3, loading_interval: 4, min_interval: 4, max_interval: 16, extend_step: 4, shorten_step: 4,
+          note: "Monthly until stable, then treat and extend in steps of up to four weeks."}
+  brolucizumab:
+    wet_amd: {loading_doses: 3, loading_interval: 4, min_interval: 8, max_interval: 12, extend_step: 4, shorten_step: 4,
+              note: "Three loading doses every four weeks, then every twelve weeks, or eight weeks if activity persists."}
+    dmo: {loading_doses: 5, loading_interval: 6, min_interval: 8, max_interval: 16, extend_step: 4, shorten_step: 4,
+          note: "Five loading doses every six weeks, then every twelve weeks, adjusted between eight and sixteen."}

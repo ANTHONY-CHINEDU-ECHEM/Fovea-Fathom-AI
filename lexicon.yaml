@@ -1,0 +1,208 @@
+# Clinical lexicon for query understanding, chunk tagging and synonym expansion.
+# Every term is lower case. Reviewed by: clinical safety officer (pending sign off).
+version: "2026.10.1"
+review_date: "2026-10-30"
+
+conditions:
+  wet_amd:
+    label: Neovascular (wet) age related macular degeneration
+    terms: ["wet amd", "wet age related macular degeneration", "wet age-related macular degeneration", "neovascular amd",
+            "neovascular age related macular degeneration", "neovascular age-related macular degeneration", "namd",
+            "late amd (wet active)", "late amd wet active", "wet active amd", "choroidal neovascularisation secondary to amd",
+            "macular neovascularisation", "polypoidal choroidal vasculopathy", "pcv"]
+    synonyms: ["neovascular", "anti vegf", "macular degeneration"]
+  dry_amd:
+    label: Non neovascular (dry) AMD and geographic atrophy
+    terms: ["dry amd", "geographic atrophy", "late amd (dry)", "early amd", "intermediate amd", "drusen",
+            "dry age related macular degeneration", "atrophic amd"]
+    synonyms: ["macular degeneration", "atrophy"]
+  dmo:
+    label: Diabetic macular oedema
+    terms: ["diabetic macular oedema", "diabetic macular edema", "dmo", "dme", "centre involving macular oedema",
+            "center involving macular edema", "ci-dmo", "cidmo", "diabetic maculopathy"]
+    synonyms: ["macular oedema", "diabetic", "central retinal thickness"]
+  diabetic_retinopathy:
+    label: Diabetic retinopathy
+    terms: ["diabetic retinopathy", "proliferative diabetic retinopathy", "pdr", "non proliferative diabetic retinopathy",
+            "npdr", "pre proliferative retinopathy", "preproliferative", "background retinopathy", "diabetic eye screening",
+            "r3a", "r3s", "r2", "r1", "m1", "neovascularisation of the disc", "nvd", "nve", "irma"]
+    synonyms: ["diabetic", "retinopathy", "screening"]
+  rvo:
+    label: Retinal vein occlusion
+    terms: ["retinal vein occlusion", "rvo", "crvo", "brvo", "central retinal vein occlusion", "branch retinal vein occlusion",
+            "hemiretinal vein occlusion", "hrvo", "macular oedema secondary to retinal vein occlusion"]
+    synonyms: ["vein occlusion", "macular oedema"]
+  myopic_cnv:
+    label: Myopic choroidal neovascularisation
+    terms: ["myopic choroidal neovascularisation", "myopic cnv", "pathological myopia", "pathologic myopia",
+            "choroidal neovascularisation due to myopia"]
+    synonyms: ["myopia", "choroidal neovascularisation"]
+  coag:
+    label: Chronic open angle glaucoma
+    terms: ["chronic open angle glaucoma", "coag", "primary open angle glaucoma", "poag", "open angle glaucoma",
+            "normal tension glaucoma", "ntg", "glaucoma", "glaucomatous optic neuropathy"]
+    synonyms: ["intraocular pressure", "visual field", "optic nerve"]
+  oht:
+    label: Ocular hypertension
+    terms: ["ocular hypertension", "oht", "raised intraocular pressure", "raised iop", "high eye pressure"]
+    synonyms: ["intraocular pressure", "glaucoma"]
+  angle_closure:
+    label: Angle closure disease
+    terms: ["angle closure", "primary angle closure", "acute angle closure", "angle closure glaucoma",
+            "primary angle closure glaucoma", "pacg", "narrow angles", "primary angle closure suspect", "pacs"]
+    synonyms: ["iridotomy", "intraocular pressure"]
+  cataract:
+    label: Cataract
+    terms: ["cataract", "cataracts", "phacoemulsification", "cataract surgery", "lens opacity", "biometry",
+            "intraocular lens", "iol", "posterior capsule opacification", "pco", "toric"]
+    synonyms: ["lens", "refraction"]
+  uveitis:
+    label: Uveitis
+    terms: ["uveitis", "non infectious uveitis", "non-infectious uveitis", "iritis", "anterior uveitis", "posterior uveitis",
+            "intermediate uveitis", "panuveitis", "uveitic macular oedema", "scleritis"]
+    synonyms: ["inflammation", "corticosteroid"]
+  dry_eye:
+    label: Dry eye disease
+    terms: ["dry eye", "dry eye disease", "keratoconjunctivitis sicca", "meibomian gland dysfunction", "severe keratitis",
+            "sjogren"]
+    synonyms: ["ocular surface", "tear film"]
+  keratitis:
+    label: Keratitis and ocular surface infection
+    terms: ["microbial keratitis", "bacterial keratitis", "acanthamoeba", "acanthamoeba keratitis", "corneal ulcer",
+            "herpes simplex keratitis", "herpes zoster ophthalmicus", "neurotrophic keratitis", "contact lens keratitis"]
+    synonyms: ["cornea", "infection"]
+  limbal_stem_cell:
+    label: Limbal stem cell deficiency
+    terms: ["limbal stem cell deficiency", "lscd", "holoclar"]
+    synonyms: ["cornea", "eye burn"]
+  retinal_detachment:
+    label: Retinal detachment
+    terms: ["retinal detachment", "rhegmatogenous retinal detachment", "retinal tear", "posterior vitreous detachment", "pvd"]
+    synonyms: ["flashes", "floaters"]
+  vascular_occlusion_arterial:
+    label: Retinal artery occlusion
+    terms: ["central retinal artery occlusion", "crao", "branch retinal artery occlusion", "brao", "retinal artery occlusion",
+            "amaurosis fugax"]
+    synonyms: ["stroke", "ischaemia"]
+  gca:
+    label: Giant cell arteritis
+    terms: ["giant cell arteritis", "gca", "temporal arteritis", "arteritic anterior ischaemic optic neuropathy", "aaion"]
+    synonyms: ["vasculitis", "corticosteroid"]
+  endophthalmitis:
+    label: Endophthalmitis
+    terms: ["endophthalmitis", "post injection endophthalmitis", "postoperative endophthalmitis", "hypopyon"]
+    synonyms: ["infection", "intravitreal"]
+  drug_toxicity:
+    label: Drug induced eye toxicity
+    terms: ["hydroxychloroquine retinopathy", "chloroquine retinopathy", "hydroxychloroquine screening",
+            "ethambutol optic neuropathy", "vigabatrin", "toxic maculopathy"]
+    synonyms: ["monitoring", "screening"]
+  uveal_melanoma:
+    label: Uveal melanoma
+    terms: ["uveal melanoma", "choroidal melanoma", "ocular melanoma"]
+    synonyms: ["tumour", "oncology"]
+  inherited_retinal:
+    label: Inherited retinal disease
+    terms: ["inherited retinal dystrophy", "inherited retinal disease", "retinitis pigmentosa", "rpe65", "leber congenital amaurosis",
+            "stargardt", "voretigene"]
+    synonyms: ["gene therapy", "genetic"]
+
+drugs:
+  aflibercept: {class: anti_vegf, brands: ["eylea", "yesafili", "eylea 8 mg"], route: intravitreal}
+  ranibizumab: {class: anti_vegf, brands: ["lucentis", "byooviz", "ongavia", "ximluci"], route: intravitreal}
+  faricimab: {class: anti_vegf, brands: ["vabysmo"], route: intravitreal}
+  brolucizumab: {class: anti_vegf, brands: ["beovu"], route: intravitreal}
+  bevacizumab: {class: anti_vegf, brands: ["avastin"], route: intravitreal}
+  pegaptanib: {class: anti_vegf, brands: ["macugen"], route: intravitreal}
+  dexamethasone implant: {class: intravitreal_steroid, brands: ["ozurdex", "dexamethasone intravitreal implant"], route: intravitreal}
+  fluocinolone implant: {class: intravitreal_steroid, brands: ["iluvien", "fluocinolone acetonide implant", "fluocinolone acetonide"], route: intravitreal}
+  triamcinolone: {class: intravitreal_steroid, brands: ["triesence"], route: intravitreal}
+  verteporfin: {class: photosensitiser, brands: ["visudyne"], route: intravenous}
+  latanoprost: {class: prostaglandin_analogue, brands: ["xalatan", "monopost"], route: topical}
+  bimatoprost: {class: prostaglandin_analogue, brands: ["lumigan"], route: topical}
+  travoprost: {class: prostaglandin_analogue, brands: ["travatan"], route: topical}
+  tafluprost: {class: prostaglandin_analogue, brands: ["saflutan"], route: topical}
+  timolol: {class: beta_blocker_topical, brands: ["timoptol", "tiopex"], route: topical}
+  betaxolol: {class: beta_blocker_topical, brands: ["betoptic"], route: topical}
+  dorzolamide: {class: carbonic_anhydrase_inhibitor, brands: ["trusopt", "cosopt"], route: topical}
+  brinzolamide: {class: carbonic_anhydrase_inhibitor, brands: ["azopt", "simbrinza"], route: topical}
+  acetazolamide: {class: carbonic_anhydrase_inhibitor_systemic, brands: ["diamox"], route: oral}
+  brimonidine: {class: alpha_agonist, brands: ["alphagan", "combigan"], route: topical}
+  apraclonidine: {class: alpha_agonist, brands: ["iopidine"], route: topical}
+  pilocarpine: {class: miotic, brands: [], route: topical}
+  netarsudil: {class: rho_kinase_inhibitor, brands: ["rhokiinsa", "roclanda"], route: topical}
+  prednisolone acetate: {class: topical_steroid, brands: ["pred forte"], route: topical}
+  dexamethasone eye drops: {class: topical_steroid, brands: ["maxidex"], route: topical}
+  ciclosporin eye drops: {class: immunomodulator_topical, brands: ["ikervis"], route: topical}
+  adalimumab: {class: anti_tnf, brands: ["humira", "amgevita", "imraldi", "hulio"], route: subcutaneous}
+  hydroxychloroquine: {class: aminoquinoline, brands: ["plaquenil", "quinoric"], route: oral}
+  chloroquine: {class: aminoquinoline, brands: ["avloclor"], route: oral}
+  tamoxifen: {class: serm, brands: ["nolvadex"], route: oral}
+  tamsulosin: {class: alpha_blocker_systemic, brands: ["flomaxtra", "contiflo"], route: oral}
+  alfuzosin: {class: alpha_blocker_systemic, brands: ["xatral"], route: oral}
+  ethambutol: {class: antimycobacterial, brands: [], route: oral}
+  amiodarone: {class: antiarrhythmic, brands: ["cordarone"], route: oral}
+  topiramate: {class: antiepileptic, brands: ["topamax"], route: oral}
+  vigabatrin: {class: antiepileptic, brands: ["sabril"], route: oral}
+  prednisolone: {class: systemic_steroid, brands: [], route: oral}
+  warfarin: {class: anticoagulant, brands: ["marevan"], route: oral}
+  apixaban: {class: anticoagulant, brands: ["eliquis"], route: oral}
+  rivaroxaban: {class: anticoagulant, brands: ["xarelto"], route: oral}
+  edoxaban: {class: anticoagulant, brands: ["lixiana"], route: oral}
+  dabigatran: {class: anticoagulant, brands: ["pradaxa"], route: oral}
+  clopidogrel: {class: antiplatelet, brands: ["plavix"], route: oral}
+  aspirin: {class: antiplatelet, brands: [], route: oral}
+  salbutamol: {class: beta_agonist, brands: ["ventolin"], route: inhaled}
+  verapamil: {class: rate_limiting_ccb, brands: [], route: oral}
+  diltiazem: {class: rate_limiting_ccb, brands: [], route: oral}
+  bisoprolol: {class: beta_blocker_systemic, brands: ["cardicor"], route: oral}
+  phenelzine: {class: maoi, brands: ["nardil"], route: oral}
+  oxybutynin: {class: anticholinergic, brands: ["ditropan"], route: oral}
+  amitriptyline: {class: tricyclic, brands: [], route: oral}
+  semaglutide: {class: glp1_agonist, brands: ["ozempic", "wegovy"], route: subcutaneous}
+  voretigene neparvovec: {class: gene_therapy, brands: ["luxturna"], route: subretinal}
+  tebentafusp: {class: bispecific, brands: ["kimmtrak"], route: intravenous}
+  holoclar: {class: cell_therapy, brands: [], route: ocular_surface}
+  cenegermin: {class: nerve_growth_factor, brands: ["oxervate"], route: topical}
+
+interventions:
+  slt: ["selective laser trabeculoplasty", "slt", "360 slt", "360° slt", "laser trabeculoplasty"]
+  trabeculectomy: ["trabeculectomy", "glaucoma surgery", "drainage surgery", "tube surgery"]
+  iridotomy: ["laser peripheral iridotomy", "peripheral iridotomy", "lpi", "iridotomy"]
+  prp: ["panretinal photocoagulation", "pan retinal photocoagulation", "prp", "scatter laser"]
+  macular_laser: ["macular laser", "focal laser", "grid laser", "micropulse laser"]
+  pdt: ["photodynamic therapy", "pdt"]
+  vitrectomy: ["vitrectomy", "pars plana vitrectomy", "ppv"]
+  intravitreal_injection: ["intravitreal injection", "intravitreal", "injection", "ivt"]
+  treat_and_extend: ["treat and extend", "treat-and-extend", "t&e", "treat extend", "interval extension"]
+  cataract_surgery: ["cataract surgery", "phacoemulsification", "phaco", "lens extraction", "clear lens extraction",
+                     "immediately sequential bilateral cataract surgery", "isbcs"]
+  crosslinking: ["corneal cross linking", "corneal crosslinking", "cxl"]
+
+laterality:
+  right: ["right eye", "re", "od", "oculus dexter", "r eye"]
+  left: ["left eye", "le", "os", "oculus sinister", "l eye"]
+  both: ["both eyes", "ou", "oculus uterque", "bilateral", "bilaterally"]
+
+spelling:
+  edema: oedema
+  hemorrhage: haemorrhage
+  ischemic: ischaemic
+  ischemia: ischaemia
+  center: centre
+  fiber: fibre
+  anesthesia: anaesthesia
+  neovascularization: neovascularisation
+  color: colour
+  tumor: tumour
+  pediatric: paediatric
+
+guideline_synonyms:
+  "first line": ["first treatment", "initial treatment", "treatment naive"]
+  "second line": ["switch", "insufficient response", "suboptimal response"]
+  "wet amd": ["late amd (wet active)", "neovascular"]
+  "dmo": ["diabetic macular oedema", "central retinal thickness"]
+  "injection interval": ["treat and extend", "dosing interval"]
+  "eye pressure": ["intraocular pressure", "iop"]
+  "drops": ["eye drops", "topical"]
+  "laser": ["selective laser trabeculoplasty", "photocoagulation"]
