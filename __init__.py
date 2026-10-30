@@ -1,1 +1,1 @@
-"""Golden set evaluation and the continuous integration gate."""
+"""Source connectors for public, authoritative eye care knowledge."""

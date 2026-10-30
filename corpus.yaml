@@ -1,0 +1,42 @@
+# What the full harvest collects. Edit, review in a pull request, then run `make ingest`.
+pubmed_query_families:
+  neovascular_amd: '("wet macular degeneration"[MeSH Terms] OR "neovascular age-related macular degeneration"[tiab]) AND (anti-VEGF OR aflibercept OR ranibizumab OR faricimab OR brolucizumab OR bevacizumab)'
+  treat_and_extend: '("treat and extend"[tiab] OR "treat-and-extend"[tiab]) AND (macular OR retinal)'
+  geographic_atrophy: '"geographic atrophy"[MeSH Terms] OR "geographic atrophy"[tiab]'
+  diabetic_macular_oedema: '("macular edema"[MeSH Terms] AND "diabetic retinopathy"[MeSH Terms]) OR "diabetic macular oedema"[tiab] OR "diabetic macular edema"[tiab]'
+  proliferative_retinopathy: '"proliferative diabetic retinopathy"[tiab] AND (panretinal OR anti-VEGF OR vitrectomy)'
+  retinal_vein_occlusion: '"retinal vein occlusion"[MeSH Terms] AND (treatment OR therapy)'
+  myopic_cnv: '"myopic choroidal neovascularization"[tiab] OR ("myopia, degenerative"[MeSH Terms] AND choroidal neovascularization)'
+  glaucoma_treatment: '"glaucoma, open-angle"[MeSH Terms] AND (trabeculoplasty OR prostaglandin OR trabeculectomy OR "minimally invasive")'
+  ocular_hypertension: '"ocular hypertension"[MeSH Terms] AND (treatment OR conversion OR risk)'
+  angle_closure: '"glaucoma, angle-closure"[MeSH Terms] AND (iridotomy OR "lens extraction" OR acute)'
+  cataract_surgery: '"cataract extraction"[MeSH Terms] AND (biometry OR "intraocular lens power" OR outcomes OR complications)'
+  uveitis: '"uveitis"[MeSH Terms] AND (adalimumab OR implant OR corticosteroid OR "macular edema")'
+  intravitreal_safety: '"intravitreal injections"[MeSH Terms] AND (endophthalmitis OR "intraocular inflammation" OR "retinal vasculitis")'
+  drug_toxicity: '("hydroxychloroquine"[MeSH Terms] AND retinopathy) OR ("ethambutol" AND "optic neuropathy") OR ("vigabatrin" AND "visual field")'
+
+europe_pmc_queries:
+  - '"neovascular age-related macular degeneration" AND (aflibercept OR faricimab OR ranibizumab)'
+  - '"diabetic macular oedema" OR "diabetic macular edema"'
+  - '"open angle glaucoma" AND "selective laser trabeculoplasty"'
+  - '"retinal vein occlusion" AND anti-VEGF'
+
+clinicaltrials_conditions:
+  - Neovascular Age-related Macular Degeneration
+  - Geographic Atrophy
+  - Diabetic Macular Edema
+  - Diabetic Retinopathy
+  - Retinal Vein Occlusion
+  - Open-Angle Glaucoma
+  - Ocular Hypertension
+  - Uveitis
+  - Cataract
+
+openfda_drugs: [aflibercept, ranibizumab, faricimab, brolucizumab, bevacizumab, latanoprost, bimatoprost, travoprost, timolol,
+                dorzolamide, brinzolamide, brimonidine, netarsudil, pilocarpine, acetazolamide, tamsulosin, topiramate,
+                hydroxychloroquine, ethambutol, vigabatrin, amiodarone, adalimumab, verteporfin, prednisolone acetate]
+
+nice_guidance: [NG82, NG81, NG77, TA155, TA294, TA672, TA800, TA274, TA346, TA799, TA820, TA824, TA953, TA229, TA283, TA305,
+                TA409, TA1004, TA298, TA486, TA460, TA590, TA369, TA467, TA1027]
+
+medlineplus_topics: [macular degeneration, glaucoma, diabetic eye problems, cataract, uveitis, retinal detachment, dry eye]
