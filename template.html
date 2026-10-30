@@ -1,0 +1,334 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fovea Fathom AI demo</title>
+<style>
+  :root { --ink:#14212b; --soft:#4a5963; --paper:#f6f8f7; --panel:#fff; --line:#d9e1e4; --accent:#0b6e69; --accent-soft:#e3f2f0;
+          --danger:#b3261e; --danger-soft:#fdecea; --warn:#8a5a00; --warn-soft:#fff4dc; --ok:#1d6b3a; --right:#1f5fa8; --left:#8a4b0f; }
+  * { box-sizing: border-box; }
+  body { margin:0; font-family:"Segoe UI",system-ui,-apple-system,Arial,sans-serif; color:var(--ink); background:var(--paper); line-height:1.5; }
+  header.top { padding:1rem 1.25rem; border-bottom:1px solid var(--line); background:var(--panel); display:flex; gap:1rem; align-items:center; flex-wrap:wrap; justify-content:space-between; }
+  .brand { display:flex; gap:.75rem; align-items:center; }
+  .mark { width:34px; height:34px; border-radius:50%; background:radial-gradient(circle,var(--ink) 0 22%,var(--accent) 23% 52%,var(--accent-soft) 53%); box-shadow:inset 0 0 0 2px var(--accent); }
+  h1 { font-size:1.3rem; margin:0; } .sub { margin:0; color:var(--soft); font-size:.9rem; }
+  .notice { font-size:.8rem; color:var(--soft); max-width:440px; margin:0; }
+  nav.tabs { display:flex; gap:.4rem; padding:.75rem 1.25rem 0; }
+  nav.tabs button { border:1px solid var(--line); background:var(--panel); border-bottom:0; border-radius:8px 8px 0 0; padding:.45rem 1rem; font:inherit; cursor:pointer; }
+  nav.tabs button[aria-selected="true"] { background:var(--accent); color:#fff; border-color:var(--accent); }
+  main { padding:1rem 1.25rem 2rem; display:grid; grid-template-columns:minmax(0,1fr) 380px; gap:1rem; align-items:start; }
+  @media (max-width:960px) { main { grid-template-columns:1fr; } }
+  .panel { background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:1rem; }
+  textarea, input, select { font:inherit; width:100%; border:1px solid var(--line); border-radius:6px; padding:.45rem .6rem; }
+  button.primary { background:var(--accent); color:#fff; border:0; border-radius:6px; padding:.5rem 1.3rem; font:inherit; font-weight:600; cursor:pointer; }
+  .row { display:flex; gap:.5rem; justify-content:flex-end; margin-top:.5rem; }
+  .chips { display:flex; flex-wrap:wrap; gap:.35rem; margin-top:.6rem; }
+  .chip { border:1px solid var(--line); background:var(--paper); border-radius:999px; padding:.2rem .7rem; font:inherit; font-size:.8rem; color:var(--soft); cursor:pointer; text-align:left; }
+  .emergency { background:var(--danger-soft); border:2px solid var(--danger); border-radius:10px; padding:.8rem 1rem; margin-top:1rem; }
+  .emergency h2 { margin:0 0 .3rem; font-size:1.05rem; color:var(--danger); }
+  .badge { background:var(--danger); color:#fff; border-radius:4px; font-size:.72rem; padding:.05rem .45rem; text-transform:uppercase; letter-spacing:.04em; }
+  .tool { border:1px solid var(--line); border-left:4px solid var(--accent); border-radius:10px; padding:.75rem 1rem; margin-top:1rem; background:var(--panel); }
+  .tool h3 { margin:0 0 .3rem; font-size:1rem; } .verified { font-size:.72rem; color:var(--accent); background:var(--accent-soft); border-radius:4px; padding:0 .4rem; margin-left:.4rem; }
+  .working { font-size:.82rem; color:var(--soft); }
+  table { width:100%; border-collapse:collapse; font-size:.82rem; } th, td { text-align:left; padding:.3rem .4rem; border-bottom:1px solid var(--line); vertical-align:top; }
+  .meets { color:var(--ok); font-weight:600; } .fails { color:var(--danger); } .unknown { color:var(--warn); }
+  .answer { margin-top:1rem; } .answer p { margin:0 0 .7rem; } .judgement { font-style:italic; color:var(--soft); border-top:1px dashed var(--line); padding-top:.5rem; }
+  .cite { background:var(--accent-soft); color:var(--accent); border:0; border-radius:4px; font-size:.7rem; font-weight:700; padding:0 .3rem; vertical-align:super; cursor:pointer; }
+  .metrics { display:flex; flex-wrap:wrap; gap:1rem; font-size:.82rem; color:var(--soft); border-top:1px solid var(--line); padding-top:.6rem; }
+  .metrics b { color:var(--ink); }
+  .redacted { font-size:.82rem; background:var(--warn-soft); color:var(--warn); border-radius:6px; padding:.4rem .6rem; margin-top:.8rem; }
+  aside ol { list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:.55rem; }
+  .src { border:1px solid var(--line); border-radius:8px; padding:.55rem .7rem; font-size:.82rem; }
+  .src.cited { border-color:var(--accent); } .src.hl { box-shadow:0 0 0 3px var(--accent-soft); }
+  .num { background:var(--accent); color:#fff; border-radius:4px; padding:0 .4rem; font-weight:700; font-size:.72rem; margin-right:.35rem; }
+  .meta { color:var(--soft); font-size:.75rem; margin:.2rem 0; } .sup { color:var(--warn); font-weight:600; }
+  .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:1rem; }
+  label { display:flex; flex-direction:column; font-size:.82rem; color:var(--soft); gap:.15rem; margin-bottom:.45rem; }
+  .finding { font-size:.84rem; border-radius:6px; padding:.35rem .55rem; margin:.3rem 0; }
+  .f-major,.f-contraindication { background:var(--danger-soft); color:var(--danger); } .f-caution,.f-monitor { background:var(--warn-soft); color:var(--warn); } .f-info { background:var(--paper); color:var(--soft); }
+  .hidden { display:none; }
+  footer { padding:0 1.25rem 2rem; font-size:.78rem; color:var(--soft); }
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="brand"><span class="mark"></span><div><h1>Fovea Fathom AI</h1><p class="sub">Browser demo on the verified seed snapshot</p></div></div>
+  <p class="notice">Runs entirely in this page: retrieval, redaction, emergency triage, deterministic tools and an extractive, cited answer. For demonstration only; not for clinical use.</p>
+</header>
+<nav class="tabs" role="tablist">
+  <button role="tab" aria-selected="true" data-tab="ask">Ask</button>
+  <button role="tab" aria-selected="false" data-tab="tools">Tools</button>
+</nav>
+<main id="tab-ask">
+  <section>
+    <div class="panel">
+      <textarea id="q" rows="3" placeholder="Ask about NHS eye treatment. State which eye."></textarea>
+      <div class="row"><button class="primary" id="ask">Ask</button></div>
+      <div class="chips" id="examples"></div>
+    </div>
+    <div id="redaction"></div>
+    <div id="emergency"></div>
+    <div id="tools"></div>
+    <div id="answer"></div>
+  </section>
+  <aside class="panel"><h2 style="margin:0 0 .6rem;font-size:1rem">Sources</h2><ol id="sources"><li class="meta">Sources appear here after a question.</li></ol></aside>
+</main>
+<main id="tab-tools" class="hidden">
+  <section class="grid" style="grid-column:1/-1">
+    <div class="panel"><h3>Visual acuity conversion</h3>
+      <label>Acuity<input id="va" value="6/18"></label><button class="primary" data-run="acuity">Convert</button><div id="out-acuity"></div></div>
+    <div class="panel"><h3>Lens power (SRK/T)</h3>
+      <label>Axial length (mm)<input id="al" value="23.45"></label><label>K1 (D)<input id="k1" value="43.25"></label><label>K2 (D)<input id="k2" value="44.00"></label>
+      <label>A constant<input id="ac" value="118.7"></label><label>Target refraction (D)<input id="tr" value="-0.25"></label><button class="primary" data-run="iol">Calculate</button><div id="out-iol"></div></div>
+    <div class="panel"><h3>Treat and extend</h3>
+      <label>Agent<select id="agent"><option>aflibercept</option><option>faricimab</option><option>ranibizumab</option><option>brolucizumab</option></select></label>
+      <label>Condition<select id="cond"><option value="wet_amd">Wet AMD</option><option value="dmo">DMO</option><option value="rvo">RVO</option></select></label>
+      <label>Injections given<input id="given" value="6"></label><label>Current interval (weeks)<input id="interval" value="10"></label>
+      <label><span><input type="checkbox" id="active" style="width:auto"> Disease active today (fluid, new haemorrhage or 5 letters lost)</span></label>
+      <button class="primary" data-run="te">Plan</button><div id="out-te"></div></div>
+    <div class="panel"><h3>Hydroxychloroquine monitoring</h3>
+      <label>Weight (kg)<input id="wt" value="62"></label><label>Daily dose (mg)<input id="dose" value="400"></label><label>Years on treatment<input id="yrs" value="3"></label>
+      <label><span><input type="checkbox" id="tam" style="width:auto"> Tamoxifen</span></label><label>eGFR<input id="egfr" value=""></label>
+      <button class="primary" data-run="hcq">Assess</button><div id="out-hcq"></div></div>
+  </section>
+</main>
+<footer id="footer"></footer>
+<script>
+const DATA = /*__FOVEA_DATA__*/null;
+const $ = (id) => document.getElementById(id);
+const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+
+/* Text normalisation and tokenisation, mirroring fovea.retrieval.tokenizer ------------- */
+const SPELLING = { edema: "oedema", hemorrhage: "haemorrhage", ischemic: "ischaemic", center: "centre", neovascularization: "neovascularisation" };
+const ABBREV = [[/age[- ]related macular degeneration/g, "amd"], [/diabetic macular o?edema/g, "dmo"], [/retinal vein occlusion/g, "rvo"],
+  [/ocular hypertension/g, "oht"], [/selective laser trabeculoplasty/g, "slt"], [/central (?:retinal|subfield) thickness/g, "crt"],
+  [/intraocular pressure/g, "iop"], [/proliferative diabetic retinopathy/g, "pdr"], [/panretinal photocoagulation/g, "prp"]];
+const STOP = new Set("a an and are as at be been but by can could did do does for from had has have how i if in into is it its may might more most of on or our should so such than that the their them then there these they this those to was we were what when where which while who will with would you your about after also any before being both each few further here just less no nor not now only other over same some still through under until up very".split(" "));
+const BRANDS = {};
+for (const [g, brands] of Object.entries(DATA.drugs)) for (const b of brands) if (!b.includes(" ")) BRANDS[b] = g;
+function normalise(t) {
+  let v = t.toLowerCase().replace(/[–—]/g, " ").replace(/anti[\s-]?vegf/g, "anti vegf");
+  for (const [us, uk] of Object.entries(SPELLING)) v = v.replace(new RegExp(`\\b${us}\\b`, "g"), uk);
+  return v.replace(/\s+/g, " ").trim();
+}
+function stem(t) {
+  if (!/^[a-z]+$/.test(t) || t.length <= 4 || ["uveitis", "keratitis", "iritis", "diabetes", "lens", "status"].includes(t)) return t;
+  if (t.endsWith("ies") && t.length > 5) return t.slice(0, -3) + "y";
+  if (t.endsWith("s") && !/(ss|us|is)$/.test(t)) t = t.slice(0, -1);
+  for (const s of ["ing", "ed"]) if (t.endsWith(s) && t.length - s.length >= 4) { t = t.slice(0, -s.length); if (/([b-df-hj-np-tv-z])\1$/.test(t) && !/(ll|ss)$/.test(t)) t = t.slice(0, -1); break; }
+  return t;
+}
+function tokenize(text) {
+  let v = normalise(text).replace(/(\d)\s+(mm\s?hg|um|micrometres?|mg)\b/g, (m, d, u) => d + (u.startsWith("micro") ? "um" : u.replace(" ", "")));
+  for (const [re, a] of ABBREV) v = v.replace(re, (m) => `${m} ${a}`);
+  const raw = v.match(/nct\d{8}|(?:ta|ng|cg)\d{2,4}|(?:6|20)\/\d+(?:\.\d+)?|r3[as]|r[0-2]|m[01]|\d+(?:\.\d+)?(?:mmhg|um|mg|%)|[a-z]+(?:-[a-z0-9]+)+|[a-z][a-z0-9]*|\d+(?:\.\d+)?/g) || [];
+  return raw.filter((t) => !STOP.has(t)).map((t) => stem(BRANDS[t] || t));
+}
+
+/* BM25 over the embedded chunks --------------------------------------------------- */
+const DOCS = DATA.chunks.map((c) => ({ ...c, tokens: tokenize(`${c.title}. ${c.section}. ${c.text}`) }));
+const DF = new Map(); let AVG = 0;
+for (const d of DOCS) { AVG += d.tokens.length; for (const t of new Set(d.tokens)) DF.set(t, (DF.get(t) || 0) + 1); }
+AVG /= DOCS.length;
+const idf = (t) => Math.log(1 + (DOCS.length - (DF.get(t) || 0) + 0.5) / ((DF.get(t) || 0) + 0.5));
+function bm25(query, d) {
+  const counts = {}; for (const t of d.tokens) counts[t] = (counts[t] || 0) + 1;
+  let s = 0; for (const t of new Set(tokenize(query))) { const f = counts[t]; if (!f) continue; s += idf(t) * f * 2.4 / (f + 1.4 * (0.28 + 0.72 * d.tokens.length / AVG)); }
+  return s;
+}
+
+/* Understanding -------------------------------------------------------------------- */
+function findTerms(text, table) {
+  const v = ` ${normalise(text)} `; const out = [];
+  const pairs = []; for (const [id, terms] of Object.entries(table)) for (const t of [id, ...terms]) pairs.push([t, id]);
+  pairs.sort((a, b) => b[0].length - a[0].length);
+  let rest = v;
+  for (const [term, id] of pairs) { const re = new RegExp(`(?<![a-z0-9])${term.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}(?![a-z0-9])`); if (re.test(rest)) { if (!out.includes(id)) out.push(id); rest = rest.replace(re, " "); } }
+  return out;
+}
+const CONDITION_TABLE = Object.fromEntries(Object.entries(DATA.conditions).map(([id, t]) => [id, t]));
+function understand(q) {
+  const conditions = findTerms(q, Object.fromEntries(Object.entries(CONDITION_TABLE).map(([k, v]) => [k, v])) ).filter((c) => c in DATA.conditions);
+  const drugs = findTerms(q, DATA.drugs).filter((d) => d in DATA.drugs);
+  const acuity = (q.match(/\b(?:6|20)\/\d+(?:\.\d+)?/) || [null])[0];
+  const cst = q.match(/\b(\d{3,4})\s?(?:µm|um|micrometres?|microns?)/i);
+  const iop = q.match(/\b(\d{2})\s?mm\s?hg/i);
+  const side = /\bright eye\b/i.test(q) ? "right" : /\bleft eye\b/i.test(q) ? "left" : null;
+  return { conditions, drugs, acuity, cst: cst ? Number(cst[1]) : null, iop: iop ? Number(iop[1]) : null, side };
+}
+
+/* Redaction and emergency triage -------------------------------------------------- */
+function nhsValid(d) { if (!/^\d{10}$/.test(d)) return false; let s = 0; for (let i = 0; i < 9; i++) s += Number(d[i]) * (10 - i); let c = 11 - (s % 11); if (c === 11) c = 0; return c !== 10 && c === Number(d[9]); }
+function redact(text) {
+  const counts = {}; const hit = (k) => (counts[k] = (counts[k] || 0) + 1);
+  let v = text.replace(/\b[\w.+-]+@[\w-]+\.[\w.-]+\b/g, () => (hit("EMAIL"), "[EMAIL]"));
+  v = v.replace(/\b(dob|date of birth|born)\s*:?\s*\d{1,2}[/.-]\d{1,2}[/.-]\d{2,4}/gi, (m, k) => (hit("DATE_OF_BIRTH"), `${k} [DATE_OF_BIRTH]`));
+  v = v.replace(/(?<!\d)(\d{3})[\s-]?(\d{3})[\s-]?(\d{4})(?!\d)/g, (m, a, b, c) => (nhsValid(a + b + c) ? (hit("NHS_NUMBER"), "[NHS_NUMBER]") : m));
+  v = v.replace(/\b(?:[A-Z]{1,2}\d[A-Z\d]?)\s*\d[A-Z]{2}\b/g, () => (hit("POSTCODE"), "[POSTCODE]"));
+  v = v.replace(/\b(?:Mr|Mrs|Ms|Miss|Mx|Dr|Prof)\.?\s+[A-Z][a-z]+(?:\s+[A-Z][a-z]+){0,2}/g, () => (hit("NAME"), "[NAME]"));
+  return { text: v, counts };
+}
+const NEG = /\b(?:no|denies|without|not|nil|negative for)\b[^.;]{0,40}$/i;
+function triage(text) {
+  const out = [];
+  for (const r of DATA.emergencies) {
+    for (const p of r.any) { const re = new RegExp(p, "ig"); let m; let found = false;
+      while ((m = re.exec(text))) { if (!NEG.test(text.slice(Math.max(0, m.index - 50), m.index))) { found = true; break; } if (!re.global) break; }
+      if (found) { out.push(r); break; } }
+  }
+  return out;
+}
+
+/* Deterministic tools ---------------------------------------------------------------- */
+const LOW = { cf: 1.9, hm: 2.3 };
+function parseAcuity(v) {
+  const t = String(v).trim().toLowerCase();
+  if (t in LOW) return { logmar: LOW[t], convention: true };
+  if (["pl", "npl", "lp", "nlp"].includes(t)) return { logmar: null };
+  let m = t.match(/^(6|20)\s*\/\s*(\d+(?:\.\d+)?)\s*(?:([+-])\s*(\d))?$/);
+  if (m) { let l = Math.log10(Number(m[2]) / Number(m[1])); if (m[3]) l += (m[3] === "+" ? -1 : 1) * 0.02 * Number(m[4]); return { logmar: l }; }
+  m = t.match(/^(\d{1,3})\s*letters?$/); if (m) return { logmar: (85 - Number(m[1])) / 50 };
+  m = t.match(/^(?:logmar\s*)?(-?\d+(?:\.\d+)?)\s*(?:logmar)?$/); if (m) return { logmar: Number(m[1]) };
+  throw new Error("Unrecognised acuity");
+}
+function acuityCard(v) {
+  const a = parseAcuity(v);
+  if (a.logmar === null) return { title: "Visual acuity conversion", summary: `${v}: no numeric equivalent is assigned.`, working: [] };
+  const sn = 6 * 10 ** a.logmar, letters = Math.round(Math.min(100, Math.max(0, 85 - 50 * a.logmar)));
+  return { title: "Visual acuity conversion", summary: `${v} is ${a.logmar.toFixed(2)} logMAR, about Snellen 6/${Math.round(sn * 10) / 10}, about ${letters} ETDRS letters.`,
+    working: [`logMAR ${a.logmar.toFixed(3)}`, `letters = 85 minus 50 x logMAR = ${letters}`, a.convention ? "Low vision value is a convention." : "", `Within the NICE wet AMD window 6/12 to 6/96: ${a.logmar >= 0.301 - 1e-6 && a.logmar <= 1.2042 + 1e-6 ? "yes" : "no"}`].filter(Boolean) };
+}
+function srkt(L, K, A, R) {
+  const r = 337.5 / K, Lc = L <= 24.2 ? L : -3.446 + 1.716 * L - 0.0237 * L * L, Cw = -5.41 + 0.58412 * Lc + 0.098 * K;
+  const H = r - Math.sqrt(Math.max(r * r - Cw * Cw / 4, 0)), C1 = H + (0.62467 * A - 68.747) - 3.336, Lo = L + 0.65696 - 0.02029 * L;
+  const na = 1.336, n = 0.333, V = 12;
+  return (1000 * na * (na * r - n * Lo - 0.001 * R * (V * (na * r - n * Lo) + Lo * r))) / ((Lo - C1) * (na * r - n * C1 - 0.001 * R * (V * (na * r - n * C1) + C1 * r)));
+}
+function iolCard(L, k1, k2, A, R) {
+  const K = (k1 + k2) / 2, p = srkt(L, K, A, R), srk2 = (L < 20 ? A + 3 : L < 21 ? A + 2 : L < 22 ? A + 1 : L < 24.5 ? A : A - 0.5) - 2.5 * L - 0.9 * K;
+  const findings = [];
+  if (L < 21.2 || L > 26.6) findings.push(["major", "Axial length outside 21.20 to 26.60 mm: repeat biometry and follow the local formula choice."]);
+  if (K < 41 || K > 47) findings.push(["major", "Mean K outside 41 to 47 D: repeat keratometry."]);
+  if (Math.abs(k2 - k1) >= 1) findings.push(["info", "Corneal cylinder of 1 D or more: consider a toric lens."]);
+  return { title: "Intraocular lens power (SRK/T)", summary: `SRK/T ${p.toFixed(2)} D for a target of ${R >= 0 ? "+" : ""}${R.toFixed(2)} D; SRK II cross check ${srk2.toFixed(2)} D.`, working: [`Mean K ${K.toFixed(2)} D`, `ACD constant ${(0.62467 * A - 68.747).toFixed(3)} mm`], findings };
+}
+function teCard(agent, cond, given, interval, active) {
+  const r = (DATA.regimens[agent] || {})[cond]; if (!r) return { title: "Treat and extend", summary: "No configured regimen for that agent and condition.", working: [] };
+  if (given < r.loading_doses) return { title: `Treat and extend: ${agent}`, summary: `Loading phase. Next injection in ${r.loading_interval} weeks.`, working: [r.note] };
+  const cur = isNaN(interval) ? r.min_interval : interval;
+  const next = active ? Math.max(r.min_interval, cur - r.shorten_step) : Math.min(r.max_interval, cur + r.extend_step);
+  return { title: `Treat and extend: ${agent}`, summary: `Maintenance phase. Next injection in ${next} weeks.`, working: [r.note, active ? `Active: shorten by ${r.shorten_step} weeks.` : `Inactive: extend by ${r.extend_step} weeks.`, `Configured range ${r.min_interval} to ${r.max_interval} weeks.`] };
+}
+function hcqCard(w, dose, years, tam, egfr) {
+  const c = DATA.screening.hydroxychloroquine, perKg = dose / w, risks = [];
+  if (perKg > c.hcq_max_mg_per_kg_day) risks.push(`dose ${perKg.toFixed(2)} mg/kg/day above ${c.hcq_max_mg_per_kg_day}`);
+  if (tam) risks.push("tamoxifen"); if (!isNaN(egfr) && egfr < c.egfr_threshold) risks.push(`eGFR below ${c.egfr_threshold}`);
+  const start = risks.length ? c.start_years_with_risk : c.start_years_standard;
+  return { title: "Hydroxychloroquine monitoring", summary: `${perKg.toFixed(2)} mg/kg/day. Annual monitoring ${years >= start ? "is due now" : `starts after ${start} years`}.`, working: [`Risk factors: ${risks.join(", ") || "none"}`, c.baseline] };
+}
+const STATUS = { recommended: "Recommended", recommended_with_criteria: "Recommended with criteria", check_appraisal: "Check the appraisal", research_only: "Only in research" };
+function therapyCard(cond, u) {
+  const rows = DATA.therapy.filter((o) => o.condition === cond);
+  if (!rows.length) return null;
+  const va = u.acuity ? parseAcuity(u.acuity).logmar : null;
+  const body = rows.map((o) => {
+    const c = o.criteria || {}; let elig = "unknown", why = [];
+    if (c.bcva_best && va !== null) { const inside = va >= 0.301 - 1e-6 && va <= 1.2042 + 1e-6; elig = inside ? "meets" : "fails"; if (!inside) why.push("acuity outside 6/12 to 6/96"); else why.push("other criteria to confirm"); }
+    if (c.min_cst_um && u.cst !== null) { elig = u.cst >= c.min_cst_um ? "meets" : "fails"; if (u.cst < c.min_cst_um) why.push(`thickness below ${c.min_cst_um} um`); }
+    if (c.min_iop_mmhg && u.iop !== null) { elig = u.iop >= c.min_iop_mmhg ? "meets" : "fails"; }
+    if (!Object.keys(c).length) elig = "unknown";
+    return `<tr><td>${esc(o.agent)}</td><td>${esc(o.guidance)}</td><td>${STATUS[o.status] || o.status}</td><td class="${elig}">${elig === "meets" ? "Meets recorded criteria" : elig === "fails" ? "Does not meet" : "Information missing"}${why.length ? `<br><small>${esc(why.join("; "))}</small>` : ""}</td></tr>`;
+  }).join("");
+  return { title: "NICE aligned treatment options", summary: `${rows.length} option(s) with NICE guidance for ${cond.replace("_", " ")}.`, html: `<table><tr><th>Option</th><th>Guidance</th><th>Status</th><th>${u.side ? u.side + " eye" : "This eye"}</th></tr>${body}</table>`, working: [] };
+}
+function renderCard(card) {
+  if (!card) return "";
+  const f = (card.findings || []).map(([s, m]) => `<p class="finding f-${s}">${esc(m)}</p>`).join("");
+  return `<article class="tool"><h3>${esc(card.title)}<span class="verified">Verified tool</span></h3><p>${esc(card.summary)}</p>${card.html || ""}${f}${card.working.length ? `<div class="working">${card.working.map(esc).join("<br>")}</div>` : ""}</article>`;
+}
+
+/* Retrieval with clinical priors and an extractive, cited answer -------------------- */
+const GENERIC = new Set("patient treatment treat eye eyes recommend option nice use give start first line best management people adult clinical please tell explain current evidence guidance offer need know right left year old apply which bcva acuity va cst crt subfield today".split(" "));
+const specific = (q) => new Set(tokenize(q.replace(/\[[A-Z_]+\]/g, " ")).filter((t) => !GENERIC.has(t) && !/\d/.test(t)));
+function retrieve(q, u) {
+  const recall = q + " " + u.conditions.map((c) => DATA.conditions[c][0]).join(" ") + " " + u.drugs.join(" ");
+  const qt = specific(q);
+  const scored = DOCS.map((d) => {
+    const lexical = bm25(recall, d); if (!lexical) return null;
+    let prior = 1 + 0.3 * (d.grade - 1) / 6; if (d.uk) prior *= 1.15;
+    if (u.conditions.length && d.conditions.length) prior *= d.conditions.some((c) => u.conditions.includes(c)) ? 1.4 : 1 / 1.4;
+    if (u.drugs.length && d.drugs.length) prior *= d.drugs.some((x) => u.drugs.includes(x)) ? 1.2 : 1 / 1.1;
+    if (d.superseded) prior *= 0.5;
+    const cover = [...qt].filter((t) => d.tokens.includes(t)).reduce((s, t) => s + idf(t), 0) / ([...qt].reduce((s, t) => s + idf(t), 0) || 1);
+    return { d, score: (0.6 * cover + 0.4 * Math.min(1, lexical / 12)) * prior, cover };
+  }).filter(Boolean).sort((a, b) => b.score - a.score);
+  const out = [], per = {};
+  for (const s of scored) { if ((per[s.d.doc] || 0) >= 2) continue; per[s.d.doc] = (per[s.d.doc] || 0) + 1; out.push(s); if (out.length >= 6) break; }
+  return out;
+}
+function compose(q, u, hits) {
+  if (!hits.length || hits[0].cover < 0.35) return { text: "I cannot answer this reliably from the indexed evidence. Please consult the full guidance or refine the question.", abstained: true };
+  const qt = [...specific(q)]; const best = hits[0].score; const cands = [];
+  hits.forEach((h, i) => {
+    if (h.score < 0.45 * best) return;
+    if (u.conditions.length && h.d.conditions.length && !h.d.conditions.some((c) => u.conditions.includes(c))) return;
+    h.d.text.split(/(?<=[.!?])\s+(?=[A-Z0-9])/).forEach((s, pos) => {
+      if (s.split(" ").length < 6) return; const st = new Set(tokenize(s));
+      const ov = qt.filter((t) => st.has(t)).reduce((a, t) => a + idf(t), 0); if (!ov) return;
+      cands.push({ s, n: i + 1, pos, score: ov ** 1.5 * Math.sqrt(h.score) / (1 + 0.05 * pos) / (1 + 0.05 * i) });
+    });
+  });
+  cands.sort((a, b) => b.score - a.score);
+  const chosen = []; const seen = new Set();
+  for (const c of cands) { if (seen.has(c.s)) continue; seen.add(c.s); chosen.push(c); if (chosen.length >= 5) break; }
+  chosen.sort((a, b) => a.n - b.n || a.pos - b.pos);
+  const text = chosen.map((c) => c.s.replace(/([.!?])$/, ` [${c.n}]$1`)).join(" ");
+  return { text, cited: [...new Set(chosen.map((c) => c.n))] };
+}
+
+function ask(raw) {
+  const red = redact(raw); const q = red.text; const u = understand(q); const alerts = triage(q);
+  $("redaction").innerHTML = Object.keys(red.counts).length ? `<p class="redacted">Redacted before processing: ${Object.entries(red.counts).map(([k, v]) => `${k} x${v}`).join(", ")}. Question used: ${esc(q)}</p>` : "";
+  $("emergency").innerHTML = alerts.map((a) => `<section class="emergency" role="alert"><span class="badge">${esc(a.urgency.replace(/_/g, " "))}</span><h2>${esc(a.name)}</h2><p>${esc(a.action)}</p></section>`).join("");
+  const cards = [];
+  if (u.acuity) cards.push(acuityCard(u.acuity));
+  for (const c of u.conditions.slice(0, 1)) cards.push(therapyCard(c, u));
+  $("tools").innerHTML = cards.map(renderCard).join("");
+  const hits = retrieve(q, u); const ans = compose(q, u, hits);
+  $("sources").innerHTML = hits.map((h, i) => `<li id="s${i + 1}" class="src ${ans.cited && ans.cited.includes(i + 1) ? "cited" : ""}"><span class="num">${i + 1}</span><a href="${esc(h.d.url)}" target="_blank" rel="noopener">${esc(h.d.title)}</a><p class="meta">${esc(h.d.source)} · ${h.d.year || "undated"} · grade ${h.d.grade}</p>${h.d.superseded ? `<p class="sup">Superseded by ${esc(h.d.superseded)}</p>` : ""}<p>${esc(h.d.text.slice(0, 260))}…</p></li>`).join("");
+  const body = esc(ans.text).replace(/\[(\d+)\]/g, (m, n) => `<button class="cite" data-cite="${n}">${n}</button>`);
+  $("answer").innerHTML = `<section class="panel answer"><p>${body}</p><p class="judgement">Clinical judgement: confirm against the full guidance, the SmPC, the local protocol and the patient's own findings before acting.</p><div class="metrics"><span>Mode <b>extractive</b></span><span>Sources <b>${hits.length}</b></span><span>Status <b>${ans.abstained ? "abstained" : "answered"}</b></span></div></section>`;
+}
+
+const EXAMPLES = [
+  "Is faricimab recommended for diabetic macular oedema, CST 420 um?",
+  "Right eye wet AMD, BCVA 6/18: which NICE options apply?",
+  "Mrs Jane Smith, NHS number 943 476 5919: is aflibercept recommended for wet AMD?",
+  "What did the LiGHT trial show about SLT first?",
+  "Painful red eye with haloes and vomiting",
+  "When does hydroxychloroquine monitoring start with tamoxifen?",
+];
+$("examples").innerHTML = EXAMPLES.map((e) => `<button class="chip">${esc(e)}</button>`).join("");
+$("examples").addEventListener("click", (e) => { if (e.target.matches(".chip")) { $("q").value = e.target.textContent; ask(e.target.textContent); } });
+$("ask").addEventListener("click", () => ask($("q").value));
+$("q").addEventListener("keydown", (e) => { if (e.key === "Enter" && (e.ctrlKey || e.metaKey)) ask($("q").value); });
+document.body.addEventListener("click", (e) => { const n = e.target.dataset && e.target.dataset.cite; if (n) { document.querySelectorAll(".src").forEach((x) => x.classList.remove("hl")); const el = $("s" + n); if (el) { el.classList.add("hl"); el.scrollIntoView({ behavior: "smooth", block: "center" }); } } });
+document.querySelectorAll("nav.tabs button").forEach((b) => b.addEventListener("click", () => {
+  document.querySelectorAll("nav.tabs button").forEach((x) => x.setAttribute("aria-selected", String(x === b)));
+  $("tab-ask").classList.toggle("hidden", b.dataset.tab !== "ask"); $("tab-tools").classList.toggle("hidden", b.dataset.tab !== "tools");
+}));
+const num = (id) => Number($(id).value);
+const RUN = {
+  acuity: () => acuityCard($("va").value),
+  iol: () => iolCard(num("al"), num("k1"), num("k2"), num("ac"), num("tr")),
+  te: () => teCard($("agent").value, $("cond").value, num("given"), num("interval"), $("active").checked),
+  hcq: () => hcqCard(num("wt"), num("dose"), num("yrs"), $("tam").checked, $("egfr").value === "" ? NaN : num("egfr")),
+};
+document.querySelectorAll("[data-run]").forEach((b) => b.addEventListener("click", () => {
+  const k = b.dataset.run; try { $(`out-${k}`).innerHTML = renderCard(RUN[k]()); } catch (err) { $(`out-${k}`).innerHTML = `<p class="finding f-major">${esc(err.message)}</p>`; }
+}));
+$("footer").textContent = `Knowledge: ${DATA.chunks.length} passages from ${DATA.documents} verified seed records. Rules: ${DATA.versions.map((v) => `${v.name} v${v.version}`).join(", ")}.`;
+</script>
+</body>
+</html>

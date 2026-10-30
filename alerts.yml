@@ -1,0 +1,57 @@
+groups:
+  - name: fovea_clinical_safety
+    rules:
+      - alert: UnsupportedFiguresInAnswers
+        expr: increase(fovea_unsupported_figures_total[1h]) > 0
+        labels: {severity: page}
+        annotations:
+          summary: An answer contained a clinical figure not found in its cited source
+          description: Review the audit log for the affected requests and the model in use.
+      - alert: LateralityMismatch
+        expr: increase(fovea_laterality_flags_total[1h]) > 0
+        labels: {severity: page}
+        annotations:
+          summary: An answer referred to a different eye from the question
+      - alert: GroundingRateLow
+        expr: (increase(fovea_ungrounded_answers_total[6h]) / clamp_min(increase(fovea_answers_total{status="answered"}[6h]), 1)) > 0.10
+        for: 30m
+        labels: {severity: warn}
+        annotations:
+          summary: More than 10 percent of answers failed grounding in the last six hours
+      - alert: AbstentionSpike
+        expr: (increase(fovea_answers_total{status="abstained"}[1h]) / clamp_min(sum(increase(fovea_answers_total[1h])), 1)) > 0.40
+        for: 30m
+        labels: {severity: warn}
+        annotations:
+          summary: Abstention above 40 percent; the index may be stale or degraded
+      - alert: SupersededGuidanceCited
+        expr: increase(fovea_superseded_cited_total[24h]) > 5
+        labels: {severity: warn}
+        annotations:
+          summary: Superseded guidance cited repeatedly; review ranking and the supersession graph
+      - alert: NegativeFeedbackSpike
+        expr: increase(fovea_feedback_total{polarity="negative"}[24h]) > 10
+        labels: {severity: warn}
+        annotations:
+          summary: Clinician negative feedback above threshold in 24 hours
+
+  - name: fovea_operations
+    rules:
+      - alert: ProviderCircuitOpen
+        expr: max by (provider) (fovea_circuit_open) == 1
+        for: 5m
+        labels: {severity: warn}
+        annotations:
+          summary: "Circuit open for provider {{ $labels.provider }}; answers are using fallbacks"
+      - alert: HighLatency
+        expr: histogram_quantile(0.95, sum(rate(fovea_answer_latency_seconds_bucket[10m])) by (le)) > 16
+        for: 15m
+        labels: {severity: warn}
+        annotations:
+          summary: 95th percentile answer latency above 16 seconds
+      - alert: IndexEmpty
+        expr: fovea_index_chunks == 0
+        for: 1m
+        labels: {severity: page}
+        annotations:
+          summary: The knowledge index is empty

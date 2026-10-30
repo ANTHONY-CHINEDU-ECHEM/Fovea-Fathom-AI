@@ -1,263 +1,132 @@
-"""Tool router: decides which deterministic tools a question calls for and runs them.
+"""Model router with ordered fallbacks and a circuit breaker per vendor.
 
-The router combines intents from query understanding with the structured patient context.
-Tools run per eye whenever the context is given per eye, and each card is labelled with the
-eye it describes so a right eye result can never be read as a left eye result.
+The router tries the selected provider, then each configured fallback, and always ends with
+the extractive generator, which cannot fail. A provider that fails repeatedly is opened (skipped)
+for a cooling period so a vendor outage during a clinic does not add latency to every question.
 """
 
 from __future__ import annotations
 
 import logging
-import re
-from collections.abc import Callable
-from typing import Any
+import time
+from collections.abc import Callable, Iterator
+from dataclasses import dataclass, field
 
-from fovea.clinical import ToolCard, ToolInputError, glaucoma, injections, safety_screen, therapy, toxicity
-from fovea.clinical import acuity as acuity_tool
-from fovea.clinical.trials import TrialRecord, prefilter
-from fovea.clinical.understanding import Understanding, find_conditions
-from fovea.domain import EyeContext, PatientContext
+from fovea.config import Settings
+from fovea.llm.base import GenerationRequest, LLMProvider, ProviderError
+from fovea.llm.providers import AnthropicProvider, OllamaProvider, OpenAIProvider
 
 log = logging.getLogger(__name__)
 
-THERAPY_CONDITIONS = {
-    "wet_amd",
-    "dmo",
-    "rvo",
-    "myopic_cnv",
-    "coag",
-    "oht",
-    "uveitis",
-    "dry_eye",
-    "limbal_stem_cell",
-    "uveal_melanoma",
-}
-TE_CONDITIONS = {"wet_amd", "dmo", "rvo", "myopic_cnv"}
+
+@dataclass
+class CircuitBreaker:
+    threshold: int
+    reset_seconds: float
+    failures: int = 0
+    opened_at: float | None = None
+
+    @property
+    def state(self) -> str:
+        if self.opened_at is None:
+            return "closed"
+        if time.monotonic() - self.opened_at >= self.reset_seconds:
+            return "half_open"
+        return "open"
+
+    def allow(self) -> bool:
+        return self.state != "open"
+
+    def success(self) -> None:
+        self.failures = 0
+        self.opened_at = None
+
+    def failure(self) -> None:
+        self.failures += 1
+        if self.failures >= self.threshold:
+            self.opened_at = time.monotonic()
 
 
-def _safe(name: str, fn: Callable[..., ToolCard], *args: Any, **kwargs: Any) -> ToolCard | None:
-    try:
-        return fn(*args, **kwargs)
-    except ToolInputError as exc:
-        log.info("tool %s skipped: %s", name, exc)
-        return None
+@dataclass
+class RouteOutcome:
+    provider: str
+    model: str
+    fallbacks: list[str] = field(default_factory=list)
+    errors: list[str] = field(default_factory=list)
 
 
-def _eyes_for(u: Understanding, ctx: PatientContext) -> list[tuple[str | None, EyeContext]]:
-    eyes: list[tuple[str | None, EyeContext]] = [(side, eye) for side, eye in ctx.eyes()]
-    if u.laterality and len(eyes) > 1:
-        requested = {s for s in u.laterality if s in {"right", "left"}}
-        if requested and "both" not in u.laterality:
-            eyes = [(s, e) for s, e in eyes if s in requested]
-    if eyes:
-        # Findings typed in the question complete, but never overwrite, the structured context of
-        # the eye the question is about (or of the only eye supplied).
-        targets = [(s, e) for s, e in eyes if s in u.laterality] or (eyes if len(eyes) == 1 else [])
-        merged = []
-        for side, eye in eyes:
-            merged.append((side, _complete(eye, u) if (side, eye) in targets else eye))
-        return merged
-    side = next((s for s in u.laterality if s in {"right", "left"}), None)
-    return [(side, _complete(EyeContext(), u))]
+class LLMRouter:
+    def __init__(self, settings: Settings, providers: dict[str, LLMProvider] | None = None) -> None:
+        self.settings = settings
+        self.providers: dict[str, LLMProvider] = providers or {
+            "anthropic": AnthropicProvider(
+                settings.anthropic_api_key, settings.anthropic_model, settings.llm_timeout_seconds
+            ),
+            "openai": OpenAIProvider(
+                settings.openai_api_key, settings.openai_model, settings.llm_timeout_seconds
+            ),
+            "ollama": OllamaProvider(
+                settings.ollama_url, settings.ollama_model, settings.llm_timeout_seconds
+            ),
+        }
+        self.breakers = {
+            name: CircuitBreaker(settings.circuit_failure_threshold, settings.circuit_reset_seconds)
+            for name in self.providers
+        }
 
+    def chain(self, preferred: str | None = None) -> list[str]:
+        return self.settings.provider_chain(preferred)
 
-_NEGATED = re.compile(r"\b(?:no|without|resolved|dry,? no)\s+(?:\w+\s+){0,2}$")
-
-
-def _mentioned(text: str, phrase: str) -> bool:
-    for m in re.finditer(re.escape(phrase), text):
-        if not _NEGATED.search(text[max(0, m.start() - 30) : m.start()]):
-            return True
-    return False
-
-
-def _complete(eye: EyeContext, u: Understanding) -> EyeContext:
-    updates: dict[str, Any] = {}
-    if eye.bcva is None and u.acuities:
-        updates["bcva"] = u.acuities[0]
-    if eye.central_subfield_thickness_um is None and u.cst_values:
-        updates["central_subfield_thickness_um"] = u.cst_values[0]
-    if eye.iop_mmhg is None and u.iop_values:
-        updates["iop_mmhg"] = u.iop_values[0]
-    if eye.current_interval_weeks is None and u.interval_weeks is not None:
-        updates["current_interval_weeks"] = u.interval_weeks
-    if eye.injections_given is None and u.injection_count is not None:
-        updates["injections_given"] = u.injection_count
-    if eye.subretinal_fluid is None and _mentioned(u.normalised, "subretinal fluid"):
-        updates["subretinal_fluid"] = True
-    if eye.intraretinal_fluid is None and _mentioned(u.normalised, "intraretinal fluid"):
-        updates["intraretinal_fluid"] = True
-    if eye.new_haemorrhage is None and _mentioned(u.normalised, "new haemorrhage"):
-        updates["new_haemorrhage"] = True
-    return eye.model_copy(update=updates) if updates else eye
-
-
-def _condition_for_eye(u: Understanding, eye: EyeContext) -> str | None:
-    if eye.diagnosis:
-        found = find_conditions(eye.diagnosis)
-        if found:
-            return found[0]
-    return u.conditions[0] if u.conditions else None
-
-
-def run_tools(
-    u: Understanding, ctx: PatientContext, trial_records: list[TrialRecord] | None = None
-) -> list[ToolCard]:
-    cards: list[ToolCard] = []
-    intents = set(u.intents)
-    eyes = _eyes_for(u, ctx)
-
-    for side, eye in eyes:
-        condition = _condition_for_eye(u, eye)
-        if eye.bcva and ("acuity_conversion" in intents or condition in {"wet_amd"}):
-            card = _safe("acuity", acuity_tool.convert, eye.bcva or "", eye=side)
-            if card:
-                cards.append(card)
-        if condition in THERAPY_CONDITIONS and ("therapy_options" in intents or not ctx.is_empty()):
-            subtype = "crvo" if "crvo" in u.normalised else "brvo" if "brvo" in u.normalised else None
-            prior = (
-                "non_corticosteroid"
-                if any(
-                    w in u.normalised
-                    for w in (
-                        "not responded",
-                        "insufficient response",
-                        "inadequate response",
-                        "refractory",
-                        "persistent despite",
-                    )
-                )
-                else None
+    def status(self) -> list[dict[str, object]]:
+        out = []
+        for name in self.chain():
+            if name == "extractive":
+                out.append({"provider": "extractive", "configured": True, "circuit": "closed"})
+                continue
+            provider = self.providers.get(name)
+            out.append(
+                {
+                    "provider": name,
+                    "model": getattr(provider, "model", None),
+                    "configured": bool(provider and provider.available()),
+                    "circuit": self.breakers[name].state if name in self.breakers else "unknown",
+                }
             )
-            q = therapy.TherapyQuery(
-                condition,
-                eye,
-                subtype=subtype,
-                prior_failure=prior,
-                pigment_dispersion="pigment dispersion" in u.normalised,
-            )
-            cards.append(therapy.match(q, eye_label=side))
-        agent = next((d for d in u.drugs if d in injections.AGENT_ALIASES), None) or (
-            eye.current_agent or None
-        )
-        if (
-            condition in TE_CONDITIONS
-            and agent
-            and ("treat_and_extend" in intents or eye.current_interval_weeks is not None)
-        ):
-            activity = injections.VisitActivity(
-                intraretinal_fluid=bool(eye.intraretinal_fluid),
-                subretinal_fluid=bool(eye.subretinal_fluid),
-                new_haemorrhage=bool(eye.new_haemorrhage),
-                letters_lost=0,
-                intraocular_inflammation=any(
-                    w in u.normalised for w in ("intraocular inflammation", "vitritis")
-                ),
-            )
-            given = eye.injections_given if eye.injections_given is not None else u.injection_count
-            card = _safe(
-                "treat_and_extend",
-                injections.plan,
-                agent,
-                condition,
-                given or 0,
-                eye.current_interval_weeks,
-                activity,
-                eye=side,
-            )
-            if card:
-                if given is None:
-                    card.missing.append("number of injections given")
-                cards.append(card)
-        if eye.iop_mmhg is not None and (condition in {"oht", "coag"} or "oht_threshold" in intents):
-            card = _safe(
-                "oht",
-                glaucoma.oht_assessment,
-                eye.iop_mmhg,
-                eye.cct_um,
-                eye=side,
-                pigment_dispersion="pigment dispersion" in u.normalised,
-            )
-            if card:
-                cards.append(card)
-        baseline = eye.baseline_iop_mmhg or (eye.iop_mmhg if "glaucoma_target" in intents else None)
-        if baseline and ("glaucoma_target" in intents or condition == "coag"):
-            card = _safe("target_iop", glaucoma.target_pressure, baseline, eye.glaucoma_stage, eye=side)
-            if card:
-                cards.append(card)
-        if len(eye.visual_fields) >= 3:
-            points = [(p.years_from_baseline, p.mean_deviation_db) for p in eye.visual_fields]
-            card = _safe("field_progression", glaucoma.field_progression, points, ctx.age, eye=side)
-            if card:
-                cards.append(card)
+        return out
 
-    weight = ctx.weight_kg or _weight_from_text(u.normalised)
-    if "hcq_monitoring" in intents and weight:
-        dose = _dose_from_text(u.normalised)
-        years = _years_from_text(u.normalised)
-        if dose and years is not None:
-            card = _safe(
-                "hcq",
-                toxicity.monitoring_plan,
-                weight,
-                dose,
-                years,
-                drug="chloroquine"
-                if "chloroquine" in u.normalised and "hydroxychloroquine" not in u.normalised
-                else "hydroxychloroquine",
-                tamoxifen="tamoxifen" in u.normalised or any("tamoxifen" in m.lower() for m in ctx.medicines),
-                egfr=ctx.egfr,
-            )
-            if card:
-                cards.append(card)
+    def stream(
+        self, request: GenerationRequest, preferred: str | None, extractive: Callable[[], Iterator[str]]
+    ) -> tuple[Iterator[str], RouteOutcome]:
+        """Return a token iterator from the first provider that starts streaming successfully.
 
-    planned = list(
-        dict.fromkeys(
-            u.drugs
-            + [
-                i.replace("_", " ")
-                for i in u.interventions
-                if i in {"cataract_surgery", "intravitreal_injection", "trabeculectomy", "vitrectomy"}
-            ]
-        )
-    )
-    if planned and ("safety_screen" in intents or ctx.medicines or ctx.conditions or ctx.allergies):
-        extra = [c.replace("_", " ") for c in u.conditions] + [u.normalised]
-        cards.append(
-            safety_screen.screen(
-                safety_screen.ScreenInput(planned=planned, patient=ctx, extra_conditions=extra)
-            )
-        )
+        The first chunk is pulled eagerly so a provider that fails before producing any text
+        falls back cleanly; a failure after text has streamed is reported as an error.
+        """
+        outcome = RouteOutcome(provider="extractive", model="extractive")
+        for name in self.chain(preferred):
+            if name == "extractive":
+                outcome.provider, outcome.model = "extractive", "extractive"
+                return extractive(), outcome
+            provider = self.providers.get(name)
+            breaker = self.breakers.get(name)
+            if provider is None or breaker is None or not provider.available() or not breaker.allow():
+                outcome.fallbacks.append(name)
+                continue
+            try:
+                iterator = provider.stream(request)
+                first = next(iterator)
+            except (ProviderError, StopIteration) as exc:
+                breaker.failure()
+                outcome.fallbacks.append(name)
+                outcome.errors.append(f"{name}: {exc or 'empty response'}")
+                log.warning("provider %s failed, falling back: %s", name, exc)
+                continue
+            breaker.success()
+            outcome.provider, outcome.model = name, provider.model
 
-    if "trials" in intents and trial_records is not None:
-        cards.append(
-            prefilter(
-                trial_records,
-                u.conditions[0] if u.conditions else None,
-                age=ctx.age or u.age,
-                sex=None if ctx.sex == "unknown" else ctx.sex,
-            )
-        )
-    return cards
+            def chained(first: str = first, rest: Iterator[str] = iterator) -> Iterator[str]:
+                yield first
+                yield from rest
 
-
-def _weight_from_text(text: str) -> float | None:
-    m = re.search(r"(\d{2,3}(?:\.\d)?)\s?kg\b", text)
-    return float(m.group(1)) if m else None
-
-
-def _dose_from_text(text: str) -> float | None:
-    m = re.search(r"(\d{2,4})\s?mg\s?(?:a day|daily|per day|od|once daily)?", text)
-    if not m:
-        return None
-    dose = float(m.group(1))
-    if re.search(r"(\d{2,4})\s?mg\s?(?:twice daily|bd|two times)", text):
-        dose *= 2
-    if "weekly" in text or "per week" in text or "a week" in text:
-        dose = dose / 7
-    return dose
-
-
-def _years_from_text(text: str) -> float | None:
-    m = re.search(r"(\d{1,2}(?:\.\d)?)\s?(?:years?|yrs?)\b(?! old)", text)
-    return float(m.group(1)) if m else None
+            return chained(), outcome
+        return extractive(), outcome

@@ -1,0 +1,108 @@
+flowchart TB
+
+    %% LAYER 1 · KNOWLEDGE SOURCES
+    subgraph L1["1 · REAL KNOWLEDGE SOURCES"]
+        direction LR
+        NICE(["<b>NICE</b><br/>NG82 · NG81 · NG77<br/>25 appraisals"])
+        DESP(["<b>NHS Diabetic Eye<br/>Screening</b><br/>Grades · pathways"])
+        RCO(["<b>Royal College of<br/>Ophthalmologists</b><br/>Monitoring guidance"])
+        PUBMED(["<b>PubMed</b><br/>14 query families"])
+        EPMC(["<b>Europe PMC</b><br/>CC BY · CC0 text"])
+        CTGOV(["<b>ClinicalTrials.gov</b><br/>API v2 registry"])
+        FDA(["<b>openFDA</b><br/>Safety sections only"])
+        MLP(["<b>MedlinePlus</b><br/>Patient topics"])
+        NICE ~~~ DESP ~~~ RCO ~~~ FDA
+        PUBMED ~~~ EPMC ~~~ CTGOV ~~~ MLP
+    end
+
+    %% LAYER 2 · INGESTION PIPELINE
+    subgraph L2["2 · INGESTION PIPELINE"]
+        direction LR
+        HARVEST["<b>Polite Harvest</b><br/>Token bucket<br/>backoff · robots.txt"]
+        RAW[("<b>Raw JSONL</b><br/>Resumable<br/>checkpoints")]
+        TAG["<b>Clean and Tag</b><br/>Conditions · medicines<br/>negation aware"]
+        DEDUP["<b>Deduplicate</b><br/>64 bit SimHash<br/>namespaced ids"]
+        CURRENCY["<b>Currency Graph</b><br/>Superseded<br/>guidance marked"]
+        CHUNK["<b>Chunk</b><br/>Section aware<br/>per chunk scope"]
+        GRADE["<b>Grade Evidence</b><br/>Seven step<br/>ladder"]
+        HARVEST ==> RAW ==> TAG ==> DEDUP ==> CURRENCY ==> CHUNK ==> GRADE
+    end
+
+    %% LAYER 3 · KNOWLEDGE INDEX
+    subgraph L3["3 · KNOWLEDGE INDEX"]
+        direction LR
+        VEC[("<b>Qdrant</b><br/>Dense vectors<br/>BGE base")]
+        BM25[("<b>BM25</b><br/>Ophthalmic<br/>tokenizer")]
+        MANIFEST[("<b>Build Manifest</b><br/>Counts · licences<br/>verification")]
+        RULES[("<b>Rule Files</b><br/>Versioned clinical<br/>YAML")]
+        VEC ~~~ BM25 ~~~ MANIFEST ~~~ RULES
+    end
+
+    %% LAYER 4 · QUESTION ANSWERING
+    subgraph L4["4 · QUESTION ANSWERING"]
+        direction LR
+        UI["<b>Clinician Interface</b><br/>React<br/>per eye context"]
+        API["<b>FastAPI Gateway</b><br/>Keys · rate limits<br/>SSE stream"]
+        GUARD{{"<b>Guardrails</b><br/>Redaction · triage<br/>scope"}}
+        QU["<b>Understanding</b><br/>Laterality · acuity<br/>IOP · thickness"]
+        HYBRID["<b>Hybrid Retrieval</b><br/>Dense · sparse<br/>RRF"]
+        RERANK["<b>Rerank</b><br/>Condition and<br/>medicine priors"]
+        GATE{{"<b>Answerability</b><br/>Evidence · coverage<br/>medicines"}}
+        ROUTER["<b>LLM Router</b><br/>Claude · OpenAI<br/>Ollama · extractive"]
+        VALID{{"<b>Validators</b><br/>Citations · figures<br/>claims · laterality"}}
+        UI ==>|"question"| API ==> GUARD ==> QU ==> HYBRID ==> RERANK ==> GATE ==> ROUTER ==> VALID
+    end
+
+    %% LAYER 5 · DETERMINISTIC OPHTHALMIC TOOLS
+    subgraph L5["5 · DETERMINISTIC OPHTHALMIC TOOLS"]
+        direction LR
+        ACUITY[["<b>Acuity</b><br/>Snellen · logMAR<br/>ETDRS letters"]]
+        IOL[["<b>Lens Power</b><br/>SRK/T with<br/>SRK II check"]]
+        DR[["<b>Retinopathy Grade</b><br/>NHS R and M<br/>urgency order"]]
+        TE[["<b>Treat and Extend</b><br/>Intravitreal<br/>intervals"]]
+        THERAPY[["<b>Therapy Matcher</b><br/>NICE criteria<br/>per eye"]]
+        GLAUC[["<b>Glaucoma</b><br/>NG81 threshold<br/>field slope"]]
+        SAFE[["<b>Safety Screen</b><br/>Drops · implants<br/>surgery · HCQ"]]
+        ACUITY ~~~ IOL ~~~ DR ~~~ TE ~~~ THERAPY ~~~ GLAUC ~~~ SAFE
+    end
+
+    %% LAYER 6 · GOVERNANCE AND OPERATIONS
+    subgraph L6["6 · GOVERNANCE AND OPERATIONS"]
+        direction LR
+        AUDIT[("<b>Audit Log</b><br/>Keyed hash<br/>no patient text")]
+        FEED["<b>Clinician Feedback</b><br/>Redacted<br/>reasons"]
+        PROM["<b>Prometheus</b><br/>Metrics<br/>safety alerts"]
+        GRAF["<b>Grafana</b><br/>Provisioned<br/>dashboard"]
+        EVAL["<b>Evaluation Gate</b><br/>53 question<br/>golden set"]
+        FEED ==> AUDIT ==> EVAL
+        PROM ==> GRAF
+    end
+
+    %% Flows between layers
+    L1 ==>|"public APIs only"| L2
+    L2 ==>|"graded, scoped chunks"| L3
+    L3 ==>|"hybrid search"| L4
+    L4 <==>|"entities in · verified tool cards out"| L5
+    L3 ==>|"versioned rules"| L5
+    L4 ==>|"cited answer · grounding report"| L6
+
+    %% Monochrome styling: outlines only, no fills, no background colour
+    classDef source fill:none,stroke:#8b949e
+    classDef step fill:none,stroke:#8b949e
+    classDef store fill:none,stroke:#8b949e
+    classDef gate fill:none,stroke:#8b949e
+    classDef tool fill:none,stroke:#8b949e
+
+    class NICE,DESP,RCO,PUBMED,EPMC,CTGOV,FDA,MLP source
+    class HARVEST,TAG,DEDUP,CURRENCY,CHUNK,GRADE,UI,API,QU,HYBRID,RERANK,ROUTER,FEED,PROM,GRAF,EVAL step
+    class RAW,VEC,BM25,RULES,MANIFEST,AUDIT store
+    class GUARD,GATE,VALID gate
+    class ACUITY,IOL,DR,TE,THERAPY,GLAUC,SAFE tool
+
+    style L1 fill:none,stroke:#8b949e
+    style L2 fill:none,stroke:#8b949e
+    style L3 fill:none,stroke:#8b949e
+    style L4 fill:none,stroke:#8b949e
+    style L5 fill:none,stroke:#8b949e
+    style L6 fill:none,stroke:#8b949e
+    linkStyle default stroke:#8b949e
