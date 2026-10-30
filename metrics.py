@@ -1,76 +1,80 @@
-"""Prometheus metrics, including safety signals the alert rules watch."""
+"""Evaluation metrics computed per question and aggregated across the golden set."""
 
 from __future__ import annotations
 
+from dataclasses import dataclass, field
 from typing import Any
 
-from prometheus_client import CollectorRegistry, Counter, Gauge, Histogram
 
-REGISTRY = CollectorRegistry()
-
-REQUESTS = Counter("fovea_requests_total", "Questions received", ["endpoint"], registry=REGISTRY)
-ANSWERS = Counter("fovea_answers_total", "Answers by status", ["status"], registry=REGISTRY)
-LATENCY = Histogram(
-    "fovea_answer_latency_seconds",
-    "End to end answer latency",
-    buckets=(0.1, 0.25, 0.5, 1, 2, 4, 8, 16, 32),
-    registry=REGISTRY,
-)
-PROVIDER = Counter("fovea_provider_total", "Answers by provider", ["provider"], registry=REGISTRY)
-FALLBACKS = Counter("fovea_provider_fallbacks_total", "Provider fallbacks", ["provider"], registry=REGISTRY)
-EMERGENCIES = Counter("fovea_emergencies_total", "Emergency banners raised", ["emergency"], registry=REGISTRY)
-UNSUPPORTED_FIGURES = Counter(
-    "fovea_unsupported_figures_total", "Figures not found in cited sources", registry=REGISTRY
-)
-UNGROUNDED = Counter("fovea_ungrounded_answers_total", "Answers that failed grounding", registry=REGISTRY)
-LATERALITY_FLAGS = Counter(
-    "fovea_laterality_flags_total", "Answers flagged for an eye mismatch", registry=REGISTRY
-)
-SUPERSEDED_CITED = Counter(
-    "fovea_superseded_cited_total", "Answers citing superseded guidance", registry=REGISTRY
-)
-CITATION_COVERAGE = Histogram(
-    "fovea_citation_coverage",
-    "Citation coverage per answer",
-    buckets=(0.5, 0.7, 0.8, 0.9, 0.95, 1.0),
-    registry=REGISTRY,
-)
-CLAIM_SUPPORT = Histogram(
-    "fovea_claim_support",
-    "Claim support per answer",
-    buckets=(0.5, 0.7, 0.8, 0.9, 0.95, 1.0),
-    registry=REGISTRY,
-)
-TOOL_USE = Counter("fovea_tool_cards_total", "Deterministic tool cards produced", ["tool"], registry=REGISTRY)
-CACHE_HITS = Counter("fovea_cache_hits_total", "Answer cache hits", registry=REGISTRY)
-FEEDBACK = Counter("fovea_feedback_total", "Clinician feedback", ["polarity"], registry=REGISTRY)
-INDEX_CHUNKS = Gauge("fovea_index_chunks", "Chunks in the knowledge index", registry=REGISTRY)
-CIRCUIT_OPEN = Gauge(
-    "fovea_circuit_open", "Circuit breaker open for provider", ["provider"], registry=REGISTRY
-)
+@dataclass
+class QuestionResult:
+    id: str
+    status: str
+    expected_status: str
+    hit_at_5: bool | None
+    reciprocal_rank: float | None
+    fact_recall: float | None
+    citation_coverage: float | None
+    claim_support: float | None
+    unsupported_figures: int
+    emergency_ok: bool
+    tools_ok: bool | None
+    redaction_ok: bool | None
+    scope_ok: bool
+    laterality_ok: bool
+    latency_ms: float
+    notes: list[str] = field(default_factory=list)
 
 
-def observe_final(final: dict[str, Any]) -> None:
-    ANSWERS.labels(final["status"]).inc()
-    LATENCY.observe((final.get("latency_ms") or 0) / 1000)
-    if final.get("provider"):
-        PROVIDER.labels(final["provider"]).inc()
-    for name in final.get("fallbacks", []):
-        FALLBACKS.labels(name).inc()
-    for emergency in final.get("emergencies", []):
-        EMERGENCIES.labels(emergency).inc()
-    for tool in final.get("tools", []):
-        TOOL_USE.labels(tool).inc()
-    grounding = final.get("grounding")
-    if grounding:
-        CITATION_COVERAGE.observe(grounding["citation_coverage"])
-        CLAIM_SUPPORT.observe(grounding["claim_support"])
-        if grounding["unsupported_figures"]:
-            UNSUPPORTED_FIGURES.inc(len(grounding["unsupported_figures"]))
-        if not grounding["grounded"]:
-            UNGROUNDED.inc()
-    laterality = final.get("laterality")
-    if laterality and not laterality.get("consistent", True):
-        LATERALITY_FLAGS.inc()
-    if final.get("superseded_cited"):
-        SUPERSEDED_CITED.inc()
+def retrieval(expected: list[str], retrieved: list[str]) -> tuple[bool | None, float | None]:
+    if not expected:
+        return None, None
+    hit = any(doc in expected for doc in retrieved[:5])
+    for rank, doc in enumerate(retrieved, start=1):
+        if doc in expected:
+            return hit, 1.0 / rank
+    return hit, 0.0
+
+
+def fact_recall(expected: list[str], answer: str) -> float | None:
+    if not expected:
+        return None
+    lowered = answer.lower()
+    return sum(1 for fact in expected if fact.lower() in lowered) / len(expected)
+
+
+def _mean(values: list[float | None]) -> float | None:
+    present = [v for v in values if v is not None]
+    return round(sum(present) / len(present), 4) if present else None
+
+
+def _rate(values: list[bool | None]) -> float | None:
+    present = [v for v in values if v is not None]
+    return round(sum(1 for v in present if v) / len(present), 4) if present else None
+
+
+def aggregate(results: list[QuestionResult]) -> dict[str, Any]:
+    answered_expected = [r for r in results if r.expected_status == "answered"]
+    abstain_expected = [r for r in results if r.expected_status == "abstained"]
+    scope_expected = [r for r in results if r.expected_status == "out_of_scope"]
+    answered = [r for r in results if r.status == "answered"]
+    return {
+        "questions": len(results),
+        "retrieval_hit_at_5": _rate([r.hit_at_5 for r in results]),
+        "retrieval_mrr": _mean([r.reciprocal_rank for r in results]),
+        "expected_fact_recall": _mean([r.fact_recall for r in results if r.status == "answered"]),
+        "citation_coverage": _mean([r.citation_coverage for r in answered]),
+        "claim_support": _mean([r.claim_support for r in answered]),
+        "answers_with_unsupported_figures": round(
+            sum(1 for r in answered if r.unsupported_figures) / (len(answered) or 1), 4
+        ),
+        "answered_when_expected": _rate([r.status == "answered" for r in answered_expected]),
+        "emergency_triage_accuracy": _rate([r.emergency_ok for r in results]),
+        "abstention_accuracy": _rate([r.status == "abstained" for r in abstain_expected]),
+        "scope_accuracy": _rate([r.scope_ok for r in results]),
+        "tool_routing_accuracy": _rate([r.tools_ok for r in results]),
+        "redaction_accuracy": _rate([r.redaction_ok for r in results]),
+        "laterality_consistency": _rate([r.laterality_ok for r in answered]),
+        "out_of_scope_detected": _rate([r.status == "out_of_scope" for r in scope_expected]),
+        "median_latency_ms": sorted(r.latency_ms for r in results)[len(results) // 2] if results else None,
+    }

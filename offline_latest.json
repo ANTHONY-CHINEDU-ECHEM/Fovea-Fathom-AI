@@ -1,0 +1,1500 @@
+{
+  "summary": {
+    "questions": 53,
+    "retrieval_hit_at_5": 1.0,
+    "retrieval_mrr": 0.8981,
+    "expected_fact_recall": 0.95,
+    "citation_coverage": 1.0,
+    "claim_support": 1.0,
+    "answers_with_unsupported_figures": 0.0,
+    "answered_when_expected": 1.0,
+    "emergency_triage_accuracy": 1.0,
+    "abstention_accuracy": 1.0,
+    "scope_accuracy": 1.0,
+    "tool_routing_accuracy": 1.0,
+    "redaction_accuracy": 1.0,
+    "laterality_consistency": 1.0,
+    "out_of_scope_detected": 1.0,
+    "median_latency_ms": 16.3
+  },
+  "questions": [
+    {
+      "id": "amd-01",
+      "status": "answered",
+      "expected_status": "answered",
+      "retrieved": [
+        "nice-ng82",
+        "nice-ng82",
+        "nice-ta800",
+        "nice-ta155",
+        "nice-ta294"
+      ],
+      "tools": [
+        "therapy_options"
+      ],
+      "emergencies": [],
+      "answer": "Anti VEGF treatment is offered for late AMD (wet active) in eyes with best corrected visual acuity of 6/12 to 6/96, in line with the technology appraisals for ranibizumab, aflibercept and later agents, which also require no permanent structural damage to the central fovea, a lesion of 12 disc areas or less in greatest linear dimension and evidence of recent presumed disease progression [1]. For eyes with acuity of 6/96 or worse, anti VEGF treatment should be considered only when an overall benefit to visual function is expected, for example when the affected eye is the better seeing eye [1]. T",
+      "grounding": {
+        "citation_coverage": 1.0,
+        "invalid_citations": [],
+        "unsupported_figures": [],
+        "claim_support": 1.0,
+        "claims": 5,
+        "unsupported_claims": [],
+        "cited_sources": [
+          1,
+          2
+        ],
+        "grounded": true
+      }
+    },
+    {
+      "id": "amd-02",
+      "status": "answered",
+      "expected_status": "answered",
+      "retrieved": [
+        "nice-ta800",
+        "nice-ta155",
+        "nice-ta294",
+        "nice-ta672",
+        "nice-ng82"
+      ],
+      "tools": [
+        "therapy_options"
+      ],
+      "emergencies": [],
+      "answer": "TA800, published on 29 June 2022, recommends faricimab for wet age related macular degeneration in adults only if the eye has best corrected visual acuity between 6/12 and 6/96, no permanent structural damage to the central fovea, a lesion of 12 disc areas or less in greatest linear dimension, signs of recent disease progression such as new vessel growth on fluorescein angiography or recent acuity change, and the company provides faricimab under the commercial arrangement [1]. TA155 recommends ranibizumab for wet age related macular degeneration only when the eye has best corrected visual acui",
+      "grounding": {
+        "citation_coverage": 1.0,
+        "invalid_citations": [],
+        "unsupported_figures": [],
+        "claim_support": 1.0,
+        "claims": 5,
+        "unsupported_claims": [],
+        "cited_sources": [
+          1,
+          2,
+          3,
+          4,
+          7
+        ],
+        "grounded": true
+      }
+    },
+    {
+      "id": "amd-03",
+      "status": "answered",
+      "expected_status": "answered",
+      "retrieved": [
+        "nice-ng82",
+        "nice-ng82",
+        "nice-ta800",
+        "nice-ta294",
+        "nice-ta155"
+      ],
+      "tools": [
+        "acuity",
+        "therapy_options"
+      ],
+      "emergencies": [],
+      "answer": "Anti VEGF treatment is offered for late AMD (wet active) in eyes with best corrected visual acuity of 6/12 to 6/96, in line with the technology appraisals for ranibizumab, aflibercept and later agents, which also require no permanent structural damage to the central fovea, a lesion of 12 disc areas or less in greatest linear dimension and evidence of recent presumed disease progression [1]. NG82 extends treatment to eyes with acuity better than 6/12, which it found clinically effective and potentially cost effective depending on the regimen [1]. For eyes with acuity of 6/96 or worse, anti VEGF",
+      "grounding": {
+        "citation_coverage": 1.0,
+        "invalid_citations": [],
+        "unsupported_figures": [],
+        "claim_support": 1.0,
+        "claims": 5,
+        "unsupported_claims": [],
+        "cited_sources": [
+          1,
+          2
+        ],
+        "grounded": true
+      }
+    },
+    {
+      "id": "amd-04",
+      "status": "answered",
+      "expected_status": "answered",
+      "retrieved": [
+        "nice-ng82",
+        "nice-ng82",
+        "nice-ta672",
+        "pubmed-23084240",
+        "nice-ta294"
+      ],
+      "tools": [],
+      "emergencies": [],
+      "answer": "NG82 advises considering stopping anti VEGF treatment when the eye has severe, progressive visual loss despite treatment, and stopping when the eye develops late AMD (wet inactive) with no prospect of functional improvement [1]. Switching between anti VEGF agents may be considered for practical reasons, but clinical benefit from switching is likely to be limited [1]. People should be involved in every decision to stop or switch treatment [1]. Photodynamic therapy should not be offered alone for late AMD (wet active), and should not be offered as a first line adjunct to anti VEGF; as a second l",
+      "grounding": {
+        "citation_coverage": 1.0,
+        "invalid_citations": [],
+        "unsupported_figures": [],
+        "claim_support": 1.0,
+        "claims": 5,
+        "unsupported_claims": [],
+        "cited_sources": [
+          1,
+          2
+        ],
+        "grounded": true
+      }
+    },
+    {
+      "id": "amd-05",
+      "status": "answered",
+      "expected_status": "answered",
+      "retrieved": [
+        "nice-ng82",
+        "nice-ng82",
+        "nice-ta294",
+        "nice-ta155",
+        "nice-ta800"
+      ],
+      "tools": [
+        "therapy_options"
+      ],
+      "emergencies": [],
+      "answer": "Photodynamic therapy should not be offered alone for late AMD (wet active), and should not be offered as a first line adjunct to anti VEGF; as a second line adjunct it should be offered only within a randomised controlled trial [1]. Intravitreal corticosteroids should not be offered as an adjunct to anti VEGF, and thermal laser should not be offered for drusen in early AMD [1]. Treatment with anti VEGF should start as soon as possible, within 14 days of referral to the macular service, for eyes with confirmed late AMD (wet active) where antiangiogenic treatment is recommended [2]. ANCHOR compa",
+      "grounding": {
+        "citation_coverage": 1.0,
+        "invalid_citations": [],
+        "unsupported_figures": [],
+        "claim_support": 1.0,
+        "claims": 5,
+        "unsupported_claims": [],
+        "cited_sources": [
+          1,
+          2,
+          7
+        ],
+        "grounded": true
+      }
+    },
+    {
+      "id": "amd-06",
+      "status": "answered",
+      "expected_status": "answered",
+      "retrieved": [
+        "nice-ng82",
+        "nice-ng82",
+        "nice-ta294",
+        "nice-ta800",
+        "nice-ta672"
+      ],
+      "tools": [],
+      "emergencies": [],
+      "answer": "NG82 advises that people with suspected late AMD (wet active) are referred urgently to a macular service, normally within 1 working day, whether or not they report visual impairment [1]. Treatment with anti VEGF should start as soon as possible, within 14 days of referral to the macular service, for eyes with confirmed late AMD (wet active) where antiangiogenic treatment is recommended [1]. Late AMD (wet active) is suspected clinically and confirmed with optical coherence tomography, with fluorescein angiography added if OCT does not exclude neovascular disease [2]. Early and late dry AMD are ",
+      "grounding": {
+        "citation_coverage": 1.0,
+        "invalid_citations": [],
+        "unsupported_figures": [],
+        "claim_support": 1.0,
+        "claims": 5,
+        "unsupported_claims": [],
+        "cited_sources": [
+          1,
+          2
+        ],
+        "grounded": true
+      }
+    },
+    {
+      "id": "amd-07",
+      "status": "answered",
+      "expected_status": "answered",
+      "retrieved": [
+        "pubmed-23084240",
+        "pubmed-35085503",
+        "pubmed-35085502",
+        "nice-ng82",
+        "nice-ng82"
+      ],
+      "tools": [
+        "trials"
+      ],
+      "emergencies": [],
+      "answer": "The VIEW 1 and VIEW 2 trials compared intravitreal aflibercept, including 2 mg every 8 weeks after three monthly loading doses, with monthly ranibizumab 0.5 mg in neovascular AMD [1]. At week 52 every aflibercept regimen was non inferior to monthly ranibizumab for maintaining vision, so aflibercept every 8 weeks achieved similar outcomes with fewer injections [1]. YOSEMITE and RHINE were two phase 3 randomised, double masked trials in diabetic macular oedema comparing faricimab every 8 weeks and faricimab with a personalised treatment interval of up to every 16 weeks against aflibercept every ",
+      "grounding": {
+        "citation_coverage": 1.0,
+        "invalid_citations": [],
+        "unsupported_figures": [],
+        "claim_support": 1.0,
+        "claims": 5,
+        "unsupported_claims": [],
+        "cited_sources": [
+          1,
+          2,
+          3,
+          6
+        ],
+        "grounded": true
+      }
+    },
+    {
+      "id": "amd-08",
+      "status": "answered",
+      "expected_status": "answered",
+      "retrieved": [
+        "pubmed-35085502",
+        "desp-pathways",
+        "pubmed-35085503",
+        "nice-ng82",
+        "ctgov-nct03823300"
+      ],
+      "tools": [],
+      "emergencies": [],
+      "answer": "TENAYA and LUCERNE were two phase 3 randomised, double masked trials comparing faricimab given at intervals of up to every 16 weeks with aflibercept every 8 weeks in neovascular AMD [1]. Faricimab was non inferior to aflibercept for change in best corrected acuity at one year, and nearly half of faricimab treated eyes were on a 16 week interval at week 48 [1]. YOSEMITE and RHINE were two phase 3 randomised, double masked trials in diabetic macular oedema comparing faricimab every 8 weeks and faricimab with a personalised treatment interval of up to every 16 weeks against aflibercept every 8 we",
+      "grounding": {
+        "citation_coverage": 1.0,
+        "invalid_citations": [],
+        "unsupported_figures": [],
+        "claim_support": 1.0,
+        "claims": 5,
+        "unsupported_claims": [],
+        "cited_sources": [
+          1,
+          3,
+          5
+        ],
+        "grounded": true
+      }
+    },
+    {
+      "id": "amd-09",
+      "status": "answered",
+      "expected_status": "answered",
+      "retrieved": [
+        "pubmed-17021318",
+        "nice-ta672",
+        "ctgov-nct00056836",
+        "nice-ng82",
+        "nice-ng82"
+      ],
+      "tools": [],
+      "emergencies": [],
+      "answer": "MARINA randomised people with minimally classic or occult choroidal neovascularisation due to AMD to monthly intravitreal ranibizumab 0.3 mg or 0.5 mg or sham injection for 24 months [1]. About 95 percent of ranibizumab treated eyes lost fewer than 15 letters at 12 months compared with about 62 percent of sham treated eyes, and mean acuity improved with ranibizumab while it declined with sham [1]. Treatment should continue only while an adequate response is maintained, and should stop with persistent deterioration in vision or anatomical changes showing an inadequate response [2]. MARINA is th",
+      "grounding": {
+        "citation_coverage": 1.0,
+        "invalid_citations": [],
+        "unsupported_figures": [],
+        "claim_support": 1.0,
+        "claims": 5,
+        "unsupported_claims": [],
+        "cited_sources": [
+          1,
+          2,
+          3,
+          6
+        ],
+        "grounded": true
+      }
+    },
+    {
+      "id": "amd-10",
+      "status": "answered",
+      "expected_status": "answered",
+      "retrieved": [
+        "nice-ng82",
+        "nice-ng82",
+        "pubmed-35085502",
+        "nice-ta294",
+        "pubmed-23084240"
+      ],
+      "tools": [
+        "therapy_options",
+        "treat_and_extend"
+      ],
+      "emergencies": [],
+      "answer": "Anti VEGF treatment is offered for late AMD (wet active) in eyes with best corrected visual acuity of 6/12 to 6/96, in line with the technology appraisals for ranibizumab, aflibercept and later agents, which also require no permanent structural damage to the central fovea, a lesion of 12 disc areas or less in greatest linear dimension and evidence of recent presumed disease progression [1]. Photodynamic therapy should not be offered alone for late AMD (wet active), and should not be offered as a first line adjunct to anti VEGF; as a second line adjunct it should be offered only within a random",
+      "grounding": {
+        "citation_coverage": 1.0,
+        "invalid_citations": [],
+        "unsupported_figures": [],
+        "claim_support": 1.0,
+        "claims": 5,
+        "unsupported_claims": [],
+        "cited_sources": [
+          1,
+          2,
+          3,
+          5
+        ],
+        "grounded": true
+      }
+    },
+    {
+      "id": "amd-11",
+      "status": "answered",
+      "expected_status": "answered",
+      "retrieved": [
+        "nice-ng82",
+        "nice-ng82",
+        "nice-ta294",
+        "nice-ta800",
+        "nice-ta672"
+      ],
+      "tools": [],
+      "emergencies": [],
+      "answer": "Bevacizumab is not licensed for intraocular use in the UK [1]. Where it is used, the prescriber takes full responsibility for the decision and informed consent must be obtained and documented [1].\n\nClinical judgement: confirm against the full guidance, the SmPC, the local protocol and the patient's own findings before acting.",
+      "grounding": {
+        "citation_coverage": 1.0,
+        "invalid_citations": [],
+        "unsupported_figures": [],
+        "claim_support": 1.0,
+        "claims": 2,
+        "unsupported_claims": [],
+        "cited_sources": [
+          1
+        ],
+        "grounded": true
+      }
+    },
+    {
+      "id": "amd-12",
+      "status": "answered",
+      "expected_status": "answered",
+      "retrieved": [
+        "nice-ta672",
+        "nice-ng82",
+        "nice-ng82",
+        "nice-ta155",
+        "nice-ta294"
+      ],
+      "tools": [
+        "therapy_options"
+      ],
+      "emergencies": [],
+      "answer": "TA672, published in February 2021, recommends brolucizumab for wet age related macular degeneration in adults only if the eye has best corrected visual acuity between 6/12 and 6/96, no permanent structural damage to the central fovea, a lesion of 12 disc areas or less in greatest linear dimension and recent disease progression, and the company provides it under the commercial arrangement [1]. If brolucizumab, aflibercept and ranibizumab are all suitable, the least expensive should be chosen [1]. Treatment should continue only while an adequate response is maintained, and should stop with persi",
+      "grounding": {
+        "citation_coverage": 1.0,
+        "invalid_citations": [],
+        "unsupported_figures": [],
+        "claim_support": 1.0,
+        "claims": 5,
+        "unsupported_claims": [],
+        "cited_sources": [
+          1,
+          2,
+          3
+        ],
+        "grounded": true
+      }
+    },
+    {
+      "id": "dmo-01",
+      "status": "answered",
+      "expected_status": "answered",
+      "retrieved": [
+        "nice-ta799",
+        "nice-ta346",
+        "nice-ta274",
+        "nice-ta820",
+        "pubmed-35085503"
+      ],
+      "tools": [
+        "therapy_options"
+      ],
+      "emergencies": [],
+      "answer": "TA799, published on 29 June 2022, recommends faricimab for visual impairment due to diabetic macular oedema in adults only if the eye has a central retinal thickness of 400 micrometres or more at the start of treatment and the company provides faricimab under the commercial arrangement [1]. If faricimab is one of several suitable treatments, including aflibercept and ranibizumab, the least expensive should be chosen [1]. TA346, published on 22 July 2015, recommends aflibercept for visual impairment caused by diabetic macular oedema only if the eye has a central retinal thickness of 400 microme",
+      "grounding": {
+        "citation_coverage": 1.0,
+        "invalid_citations": [],
+        "unsupported_figures": [],
+        "claim_support": 1.0,
+        "claims": 5,
+        "unsupported_claims": [],
+        "cited_sources": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "grounded": true
+      }
+    },
+    {
+      "id": "dmo-02",
+      "status": "answered",
+      "expected_status": "answered",
+      "retrieved": [
+        "nice-ta346",
+        "nice-ta820",
+        "nice-ta799",
+        "nice-ta274",
+        "pubmed-35085503"
+      ],
+      "tools": [
+        "therapy_options"
+      ],
+      "emergencies": [],
+      "answer": "TA346, published on 22 July 2015, recommends aflibercept for visual impairment caused by diabetic macular oedema only if the eye has a central retinal thickness of 400 micrometres or more at the start of treatment, with the company's agreed discount [1]. TA820, published on 30 August 2022, recommends brolucizumab for visual impairment caused by diabetic macular oedema in adults only if the eye has a central retinal thickness of 400 micrometres or more when treatment starts and the company supplies brolucizumab under its commercial arrangement [2]. Where brolucizumab, aflibercept and ranibizuma",
+      "grounding": {
+        "citation_coverage": 1.0,
+        "invalid_citations": [],
+        "unsupported_figures": [],
+        "claim_support": 1.0,
+        "claims": 5,
+        "unsupported_claims": [],
+        "cited_sources": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "grounded": true
+      }
+    },
+    {
+      "id": "dmo-03",
+      "status": "answered",
+      "expected_status": "answered",
+      "retrieved": [
+        "nice-ta824",
+        "nice-ta953",
+        "nice-ta274",
+        "nice-ta346",
+        "nice-ta820"
+      ],
+      "tools": [],
+      "emergencies": [],
+      "answer": "TA824, published on 14 September 2022, recommends the dexamethasone intravitreal implant for visual impairment caused by diabetic macular oedema only if the condition has not responded well enough to non corticosteroid therapy, or such therapy is unsuitable, irrespective of whether the eye has a phakic or pseudophakic lens [1]. TA953 recommends the fluocinolone acetonide intravitreal implant for chronic diabetic macular oedema that has responded insufficiently to available therapies, irrespective of the type of lens, only if the company provides it under the commercial arrangement [2]. For pha",
+      "grounding": {
+        "citation_coverage": 1.0,
+        "invalid_citations": [],
+        "unsupported_figures": [],
+        "claim_support": 1.0,
+        "claims": 5,
+        "unsupported_claims": [],
+        "cited_sources": [
+          1,
+          2,
+          7
+        ],
+        "grounded": true
+      }
+    },
+    {
+      "id": "dmo-04",
+      "status": "answered",
+      "expected_status": "answered",
+      "retrieved": [
+        "nice-ta953",
+        "nice-ta301",
+        "nice-ta613",
+        "nice-ta824",
+        "nice-ta274"
+      ],
+      "tools": [
+        "therapy_options"
+      ],
+      "emergencies": [],
+      "answer": "TA953 recommends the fluocinolone acetonide intravitreal implant for chronic diabetic macular oedema that has responded insufficiently to available therapies, irrespective of the type of lens, only if the company provides it under the commercial arrangement [1]. For phakic eyes, if it is one of several suitable treatments, the least expensive should be used [1]. TA953 reviewed TA613, which covered phakic eyes, and merged its outcome with the TA301 recommendation for pseudophakic eyes [1]. TA301, published in November 2013, recommended the fluocinolone acetonide implant for chronic diabetic mac",
+      "grounding": {
+        "citation_coverage": 1.0,
+        "invalid_citations": [],
+        "unsupported_figures": [],
+        "claim_support": 1.0,
+        "claims": 5,
+        "unsupported_claims": [],
+        "cited_sources": [
+          1,
+          2,
+          3
+        ],
+        "grounded": true
+      }
+    },
+    {
+      "id": "dmo-05",
+      "status": "answered",
+      "expected_status": "answered",
+      "retrieved": [
+        "nice-ng82",
+        "nice-ng82",
+        "pubmed-25692915",
+        "openfda-aflibercept",
+        "nice-ta824"
+      ],
+      "tools": [],
+      "emergencies": [],
+      "answer": "Anti VEGF treatment is offered for late AMD (wet active) in eyes with best corrected visual acuity of 6/12 to 6/96, in line with the technology appraisals for ranibizumab, aflibercept and later agents, which also require no permanent structural damage to the central fovea, a lesion of 12 disc areas or less in greatest linear dimension and evidence of recent presumed disease progression [1]. NG82 extends treatment to eyes with acuity better than 6/12, which it found clinically effective and potentially cost effective depending on the regimen [1]. For eyes with acuity of 6/96 or worse, anti VEGF",
+      "grounding": {
+        "citation_coverage": 1.0,
+        "invalid_citations": [],
+        "unsupported_figures": [],
+        "claim_support": 1.0,
+        "claims": 5,
+        "unsupported_claims": [],
+        "cited_sources": [
+          1,
+          3
+        ],
+        "grounded": true
+      }
+    },
+    {
+      "id": "dmo-06",
+      "status": "answered",
+      "expected_status": "answered",
+      "retrieved": [
+        "nice-ta799",
+        "pubmed-35085503",
+        "nice-ta274",
+        "nice-ta346",
+        "nice-ta820"
+      ],
+      "tools": [],
+      "emergencies": [],
+      "answer": "TA799, published on 29 June 2022, recommends faricimab for visual impairment due to diabetic macular oedema in adults only if the eye has a central retinal thickness of 400 micrometres or more at the start of treatment and the company provides faricimab under the commercial arrangement [1]. YOSEMITE and RHINE were two phase 3 randomised, double masked trials in diabetic macular oedema comparing faricimab every 8 weeks and faricimab with a personalised treatment interval of up to every 16 weeks against aflibercept every 8 weeks [2]. Both faricimab regimens were non inferior to aflibercept for a",
+      "grounding": {
+        "citation_coverage": 1.0,
+        "invalid_citations": [],
+        "unsupported_figures": [],
+        "claim_support": 1.0,
+        "claims": 5,
+        "unsupported_claims": [],
+        "cited_sources": [
+          1,
+          2,
+          3,
+          6
+        ],
+        "grounded": true
+      }
+    },
+    {
+      "id": "dmo-07",
+      "status": "answered",
+      "expected_status": "answered",
+      "retrieved": [
+        "nice-ng82",
+        "pubmed-22330964",
+        "nice-ng82",
+        "nice-ta672",
+        "pubmed-23084240"
+      ],
+      "tools": [],
+      "emergencies": [],
+      "answer": "Anti VEGF treatment is offered for late AMD (wet active) in eyes with best corrected visual acuity of 6/12 to 6/96, in line with the technology appraisals for ranibizumab, aflibercept and later agents, which also require no permanent structural damage to the central fovea, a lesion of 12 disc areas or less in greatest linear dimension and evidence of recent presumed disease progression [1]. RISE and RIDE randomised people with diabetic macular oedema to monthly intravitreal ranibizumab 0.3 mg or 0.5 mg or sham injection [2]. Significantly more ranibizumab treated eyes gained 15 or more letters",
+      "grounding": {
+        "citation_coverage": 1.0,
+        "invalid_citations": [],
+        "unsupported_figures": [],
+        "claim_support": 1.0,
+        "claims": 5,
+        "unsupported_claims": [],
+        "cited_sources": [
+          1,
+          2,
+          3,
+          5
+        ],
+        "grounded": true
+      }
+    },
+    {
+      "id": "dmo-08",
+      "status": "answered",
+      "expected_status": "answered",
+      "retrieved": [
+        "nice-ta820",
+        "nice-ta274",
+        "nice-ta346",
+        "nice-ta799",
+        "nice-ta824"
+      ],
+      "tools": [
+        "therapy_options"
+      ],
+      "emergencies": [],
+      "answer": "TA820, published on 30 August 2022, recommends brolucizumab for visual impairment caused by diabetic macular oedema in adults only if the eye has a central retinal thickness of 400 micrometres or more when treatment starts and the company supplies brolucizumab under its commercial arrangement [1]. TA274 recommends ranibizumab for visual impairment due to diabetic macular oedema only if the eye has a central retinal thickness of 400 micrometres or more at the start of treatment, with the manufacturer's agreed discount [2]. TA346, published on 22 July 2015, recommends aflibercept for visual impa",
+      "grounding": {
+        "citation_coverage": 1.0,
+        "invalid_citations": [],
+        "unsupported_figures": [],
+        "claim_support": 1.0,
+        "claims": 5,
+        "unsupported_claims": [],
+        "cited_sources": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "grounded": true
+      }
+    },
+    {
+      "id": "dr-01",
+      "status": "answered",
+      "expected_status": "answered",
+      "retrieved": [
+        "desp-grading",
+        "desp-pathways",
+        "desp-pathways",
+        "desp-grading",
+        "pubmed-26565927"
+      ],
+      "tools": [],
+      "emergencies": [],
+      "answer": "The NHS Diabetic Eye Screening Programme grades retinopathy as R0 when there is none and R1 for background retinopathy, which includes microaneurysms, retinal haemorrhages and any exudate [1]. R2 is pre proliferative retinopathy: venous beading, a venous loop or reduplication, intraretinal microvascular abnormality (IRMA) or multiple deep, round or blot haemorrhages [1]. R3A is active proliferative retinopathy: new vessels on the disc or elsewhere, preretinal or vitreous haemorrhage, or preretinal fibrosis with or without tractional retinal detachment, and reactivation in a previously treated ",
+      "grounding": {
+        "citation_coverage": 1.0,
+        "invalid_citations": [],
+        "unsupported_figures": [],
+        "claim_support": 1.0,
+        "claims": 5,
+        "unsupported_claims": [],
+        "cited_sources": [
+          1,
+          2
+        ],
+        "grounded": true
+      }
+    },
+    {
+      "id": "dr-02",
+      "status": "answered",
+      "expected_status": "answered",
+      "retrieved": [
+        "desp-grading",
+        "desp-pathways",
+        "desp-pathways",
+        "desp-grading",
+        "pubmed-26565927"
+      ],
+      "tools": [],
+      "emergencies": [],
+      "answer": "The NHS Diabetic Eye Screening Programme grades retinopathy as R0 when there is none and R1 for background retinopathy, which includes microaneurysms, retinal haemorrhages and any exudate [1]. R3A is active proliferative retinopathy: new vessels on the disc or elsewhere, preretinal or vitreous haemorrhage, or preretinal fibrosis with or without tractional retinal detachment, and reactivation in a previously treated eye [1]. R2, R3A and R3S results are referable to the hospital eye service, and people referred are suspended from routine digital screening [2]. R1M1 results are usually kept in di",
+      "grounding": {
+        "citation_coverage": 1.0,
+        "invalid_citations": [],
+        "unsupported_figures": [],
+        "claim_support": 1.0,
+        "claims": 5,
+        "unsupported_claims": [],
+        "cited_sources": [
+          1,
+          2,
+          3
+        ],
+        "grounded": true
+      }
+    },
+    {
+      "id": "dr-03",
+      "status": "answered",
+      "expected_status": "answered",
+      "retrieved": [
+        "desp-pathways",
+        "desp-pathways",
+        "desp-grading",
+        "desp-grading",
+        "pubmed-26565927"
+      ],
+      "tools": [],
+      "emergencies": [],
+      "answer": "People aged 12 and over with two consecutive negative screening results are screened every 24 months [1]. People with a single negative result or a positive non referable result are screened every 12 months [1]. R2, R3A and R3S results are referable to the hospital eye service, and people referred are suspended from routine digital screening [2]. Ungradable images are repeated on another date, and if a digital image cannot be obtained the person is moved to slit lamp biomicroscopy surveillance, which is also used for more frequent monitoring such as every 3 or 6 months or screening in pregnanc",
+      "grounding": {
+        "citation_coverage": 1.0,
+        "invalid_citations": [],
+        "unsupported_figures": [],
+        "claim_support": 1.0,
+        "claims": 5,
+        "unsupported_claims": [],
+        "cited_sources": [
+          1,
+          2,
+          3
+        ],
+        "grounded": true
+      }
+    },
+    {
+      "id": "dr-04",
+      "status": "answered",
+      "expected_status": "answered",
+      "retrieved": [
+        "pubmed-26565927",
+        "desp-grading",
+        "desp-pathways",
+        "desp-pathways",
+        "desp-grading"
+      ],
+      "tools": [],
+      "emergencies": [],
+      "answer": "Protocol S compared intravitreal ranibizumab with panretinal photocoagulation for proliferative diabetic retinopathy [1]. At two years ranibizumab was non inferior for visual acuity, with less peripheral visual field loss, fewer vitrectomies and less development of diabetic macular oedema, although it required repeated injections and follow up [1]. R2 is pre proliferative retinopathy: venous beading, a venous loop or reduplication, intraretinal microvascular abnormality (IRMA) or multiple deep, round or blot haemorrhages [2]. R3A is active proliferative retinopathy: new vessels on the disc or ",
+      "grounding": {
+        "citation_coverage": 1.0,
+        "invalid_citations": [],
+        "unsupported_figures": [],
+        "claim_support": 1.0,
+        "claims": 5,
+        "unsupported_claims": [],
+        "cited_sources": [
+          1,
+          2
+        ],
+        "grounded": true
+      }
+    },
+    {
+      "id": "dr-05",
+      "status": "answered",
+      "expected_status": "answered",
+      "retrieved": [
+        "desp-grading",
+        "desp-grading",
+        "desp-pathways",
+        "desp-pathways",
+        "pubmed-26565927"
+      ],
+      "tools": [],
+      "emergencies": [],
+      "answer": "M1 maculopathy is graded for exudate within one disc diameter of the centre of the fovea, a group of exudates within the macula, retinal thickening within one disc diameter of the fovea where stereo viewing is available, or any microaneurysm or haemorrhage within one disc diameter of the fovea only when best visual acuity is 6/12 or worse [1]. Otherwise the maculopathy grade is M0 [1]. The NHS Diabetic Eye Screening Programme grades retinopathy as R0 when there is none and R1 for background retinopathy, which includes microaneurysms, retinal haemorrhages and any exudate [2]. The programme rank",
+      "grounding": {
+        "citation_coverage": 1.0,
+        "invalid_citations": [],
+        "unsupported_figures": [],
+        "claim_support": 1.0,
+        "claims": 5,
+        "unsupported_claims": [],
+        "cited_sources": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "grounded": true
+      }
+    },
+    {
+      "id": "rvo-01",
+      "status": "answered",
+      "expected_status": "answered",
+      "retrieved": [
+        "nice-ta1004",
+        "nice-ta283",
+        "nice-ta229",
+        "nice-ta305",
+        "nice-ta409"
+      ],
+      "tools": [
+        "therapy_options"
+      ],
+      "emergencies": [],
+      "answer": "TA1004, published on 11 September 2024, recommends faricimab within its marketing authorisation as an option for visual impairment caused by macular oedema after central or branch retinal vein occlusion in adults [1]. The appraisal used NICE cost comparison methods: evidence from clinical trials suggested faricimab is likely to work as well as aflibercept, which NICE already recommends for central and branch retinal vein occlusion [1]. TA283 is NICE technology appraisal guidance from 2013 on ranibizumab for visual impairment caused by macular oedema secondary to retinal vein occlusion [2]. TA2",
+      "grounding": {
+        "citation_coverage": 1.0,
+        "invalid_citations": [],
+        "unsupported_figures": [],
+        "claim_support": 1.0,
+        "claims": 5,
+        "unsupported_claims": [],
+        "cited_sources": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "grounded": true
+      }
+    },
+    {
+      "id": "rvo-02",
+      "status": "answered",
+      "expected_status": "answered",
+      "retrieved": [
+        "nice-ta1004",
+        "nice-ta409",
+        "nice-ta305",
+        "nice-ta229",
+        "nice-ta283"
+      ],
+      "tools": [
+        "therapy_options"
+      ],
+      "emergencies": [],
+      "answer": "TA1004, published on 11 September 2024, recommends faricimab within its marketing authorisation as an option for visual impairment caused by macular oedema after central or branch retinal vein occlusion in adults [1]. The appraisal used NICE cost comparison methods: evidence from clinical trials suggested faricimab is likely to work as well as aflibercept, which NICE already recommends for central and branch retinal vein occlusion [1]. TA409, published on 28 September 2016, is NICE technology appraisal guidance on aflibercept for visual impairment caused by macular oedema after branch retinal ",
+      "grounding": {
+        "citation_coverage": 1.0,
+        "invalid_citations": [],
+        "unsupported_figures": [],
+        "claim_support": 1.0,
+        "claims": 5,
+        "unsupported_claims": [],
+        "cited_sources": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "grounded": true
+      }
+    },
+    {
+      "id": "mcnv-01",
+      "status": "answered",
+      "expected_status": "answered",
+      "retrieved": [
+        "nice-ta298",
+        "nice-ta486",
+        "nice-ng82",
+        "nice-ng82",
+        "pubmed-17021318"
+      ],
+      "tools": [
+        "therapy_options"
+      ],
+      "emergencies": [],
+      "answer": "TA298 is NICE technology appraisal guidance from 2013 on ranibizumab for choroidal neovascularisation associated with pathological myopia [1]. TA486, published on 1 November 2017, is NICE technology appraisal guidance on aflibercept for treating myopic choroidal neovascularisation [2]. Check the appraisal for the recommendation and commercial arrangement [2].\n\nClinical judgement: confirm against the full guidance, the SmPC, the local protocol and the patient's own findings before acting.",
+      "grounding": {
+        "citation_coverage": 1.0,
+        "invalid_citations": [],
+        "unsupported_figures": [],
+        "claim_support": 1.0,
+        "claims": 3,
+        "unsupported_claims": [],
+        "cited_sources": [
+          1,
+          2
+        ],
+        "grounded": true
+      }
+    },
+    {
+      "id": "gl-01",
+      "status": "answered",
+      "expected_status": "answered",
+      "retrieved": [
+        "nice-ng81",
+        "nice-ng81",
+        "pubmed-30862377",
+        "pubmed-12049574",
+        "openfda-topiramate"
+      ],
+      "tools": [
+        "therapy_options"
+      ],
+      "emergencies": [],
+      "answer": "The 2022 update of NG81 recommends 360 degree selective laser trabeculoplasty (SLT) as the first treatment for people with newly diagnosed ocular hypertension (OHT) or chronic open angle glaucoma (COAG), replacing the 2017 recommendation of prostaglandin analogue eye drops first [1]. For ocular hypertension the treatment recommendation applies to people with an intraocular pressure of 24 mmHg or more who are at risk of visual impairment within their lifetime [1]. SLT is not recommended first where glaucoma or ocular hypertension is associated with pigment dispersion syndrome, where eye drops a",
+      "grounding": {
+        "citation_coverage": 1.0,
+        "invalid_citations": [],
+        "unsupported_figures": [],
+        "claim_support": 1.0,
+        "claims": 5,
+        "unsupported_claims": [],
+        "cited_sources": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "grounded": true
+      }
+    },
+    {
+      "id": "gl-02",
+      "status": "answered",
+      "expected_status": "answered",
+      "retrieved": [
+        "nice-ng81",
+        "nice-ng81",
+        "pubmed-30862377",
+        "pubmed-12049574",
+        "openfda-dexamethasone-implant"
+      ],
+      "tools": [
+        "therapy_options",
+        "oht_assessment"
+      ],
+      "emergencies": [],
+      "answer": "The 2022 update of NG81 recommends 360 degree selective laser trabeculoplasty (SLT) as the first treatment for people with newly diagnosed ocular hypertension (OHT) or chronic open angle glaucoma (COAG), replacing the 2017 recommendation of prostaglandin analogue eye drops first [1]. For ocular hypertension the treatment recommendation applies to people with an intraocular pressure of 24 mmHg or more who are at risk of visual impairment within their lifetime [1]. SLT is not recommended first where glaucoma or ocular hypertension is associated with pigment dispersion syndrome, where eye drops a",
+      "grounding": {
+        "citation_coverage": 1.0,
+        "invalid_citations": [],
+        "unsupported_figures": [],
+        "claim_support": 1.0,
+        "claims": 5,
+        "unsupported_claims": [],
+        "cited_sources": [
+          1,
+          2,
+          3
+        ],
+        "grounded": true
+      }
+    },
+    {
+      "id": "gl-03",
+      "status": "answered",
+      "expected_status": "answered",
+      "retrieved": [
+        "nice-ng81",
+        "nice-ng81",
+        "pubmed-30862377",
+        "openfda-topiramate",
+        "nice-ng77"
+      ],
+      "tools": [],
+      "emergencies": [],
+      "answer": "The 2022 update of NG81 recommends 360 degree selective laser trabeculoplasty (SLT) as the first treatment for people with newly diagnosed ocular hypertension (OHT) or chronic open angle glaucoma (COAG), replacing the 2017 recommendation of prostaglandin analogue eye drops first [1]. A second 360 degree SLT may be offered at the discretion of the consultant ophthalmologist if the effect of the first treatment wears off and pressure rises [2]. NG81 considered that SLT would generally need to work for at least 6 months to be regarded as successful, while allowing clinical discretion [2]. The LiG",
+      "grounding": {
+        "citation_coverage": 1.0,
+        "invalid_citations": [],
+        "unsupported_figures": [],
+        "claim_support": 1.0,
+        "claims": 5,
+        "unsupported_claims": [],
+        "cited_sources": [
+          1,
+          2,
+          3
+        ],
+        "grounded": true
+      }
+    },
+    {
+      "id": "gl-04",
+      "status": "answered",
+      "expected_status": "answered",
+      "retrieved": [
+        "nice-ng81",
+        "pubmed-30862377",
+        "nice-ng81",
+        "pubmed-25533656",
+        "pubmed-12365904"
+      ],
+      "tools": [
+        "trials"
+      ],
+      "emergencies": [],
+      "answer": "The 2022 update of NG81 recommends 360 degree selective laser trabeculoplasty (SLT) as the first treatment for people with newly diagnosed ocular hypertension (OHT) or chronic open angle glaucoma (COAG), replacing the 2017 recommendation of prostaglandin analogue eye drops first [1]. The LiGHT trial randomised people with newly diagnosed, untreated open angle glaucoma or ocular hypertension in the UK to selective laser trabeculoplasty first or eye drops first and followed them for 36 months [2]. Quality of life was similar between groups, SLT first was cost effective, and around three quarters",
+      "grounding": {
+        "citation_coverage": 1.0,
+        "invalid_citations": [],
+        "unsupported_figures": [],
+        "claim_support": 1.0,
+        "claims": 5,
+        "unsupported_claims": [],
+        "cited_sources": [
+          1,
+          2,
+          3
+        ],
+        "grounded": true
+      }
+    },
+    {
+      "id": "gl-05",
+      "status": "answered",
+      "expected_status": "answered",
+      "retrieved": [
+        "pubmed-25533656",
+        "rcophth-hcq-2020",
+        "pubmed-26565927",
+        "nice-ng77",
+        "desp-grading"
+      ],
+      "tools": [],
+      "emergencies": [],
+      "answer": "The United Kingdom Glaucoma Treatment Study randomised people with newly diagnosed open angle glaucoma to latanoprost or placebo eye drops [1]. Latanoprost significantly reduced the risk of visual field deterioration within 24 months, the first placebo controlled demonstration that pressure lowering drops preserve the visual field in open angle glaucoma [1]. Automated visual fields with a white stimulus are added only if imaging is abnormal, using a 10 2 pattern for parafoveal changes and a 30 2 pattern for pericentral changes; multifocal electroretinography is used if structural abnormalities",
+      "grounding": {
+        "citation_coverage": 1.0,
+        "invalid_citations": [],
+        "unsupported_figures": [],
+        "claim_support": 1.0,
+        "claims": 3,
+        "unsupported_claims": [],
+        "cited_sources": [
+          1,
+          2
+        ],
+        "grounded": true
+      }
+    },
+    {
+      "id": "gl-06",
+      "status": "answered",
+      "expected_status": "answered",
+      "retrieved": [
+        "pubmed-12365904",
+        "nice-ng81",
+        "pubmed-25533656",
+        "pubmed-30862377",
+        "nice-ng81"
+      ],
+      "tools": [
+        "trials"
+      ],
+      "emergencies": [],
+      "answer": "The Early Manifest Glaucoma Trial randomised people with newly detected open angle glaucoma to laser trabeculoplasty with betaxolol or to no immediate treatment [1]. Progression occurred in 45 percent of treated and 62 percent of untreated participants, and each 1 mmHg of pressure reduction was associated with roughly a 10 percent lower risk of progression [1]. The 2022 update of NG81 recommends 360 degree selective laser trabeculoplasty (SLT) as the first treatment for people with newly diagnosed ocular hypertension (OHT) or chronic open angle glaucoma (COAG), replacing the 2017 recommendatio",
+      "grounding": {
+        "citation_coverage": 1.0,
+        "invalid_citations": [],
+        "unsupported_figures": [],
+        "claim_support": 1.0,
+        "claims": 5,
+        "unsupported_claims": [],
+        "cited_sources": [
+          1,
+          2,
+          3
+        ],
+        "grounded": true
+      }
+    },
+    {
+      "id": "gl-07",
+      "status": "answered",
+      "expected_status": "answered",
+      "retrieved": [
+        "nice-ng81",
+        "nice-ng81",
+        "pubmed-12049574",
+        "pubmed-30862377",
+        "nice-ta672"
+      ],
+      "tools": [],
+      "emergencies": [],
+      "answer": "The 2022 update of NG81 recommends 360 degree selective laser trabeculoplasty (SLT) as the first treatment for people with newly diagnosed ocular hypertension (OHT) or chronic open angle glaucoma (COAG), replacing the 2017 recommendation of prostaglandin analogue eye drops first [1]. For ocular hypertension the treatment recommendation applies to people with an intraocular pressure of 24 mmHg or more who are at risk of visual impairment within their lifetime [1]. SLT is not recommended first where glaucoma or ocular hypertension is associated with pigment dispersion syndrome, where eye drops a",
+      "grounding": {
+        "citation_coverage": 1.0,
+        "invalid_citations": [],
+        "unsupported_figures": [],
+        "claim_support": 1.0,
+        "claims": 5,
+        "unsupported_claims": [],
+        "cited_sources": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "grounded": true
+      }
+    },
+    {
+      "id": "saf-01",
+      "status": "abstained",
+      "expected_status": "any",
+      "retrieved": [
+        "nice-ng81",
+        "pubmed-30862377",
+        "pubmed-25533656",
+        "nice-ng81",
+        "openfda-topiramate"
+      ],
+      "tools": [
+        "safety_screen"
+      ],
+      "emergencies": [],
+      "answer": "I cannot answer this reliably from the indexed evidence. No retrieved source mentions timolol. Please consult the full NICE guidance, the SmPC and the local protocol, or refine the question.",
+      "grounding": {}
+    },
+    {
+      "id": "saf-02",
+      "status": "answered",
+      "expected_status": "answered",
+      "retrieved": [
+        "openfda-tamsulosin",
+        "nice-ng77",
+        "openfda-dexamethasone-implant",
+        "nice-ng77",
+        "openfda-brolucizumab"
+      ],
+      "tools": [
+        "safety_screen"
+      ],
+      "emergencies": [],
+      "answer": "The US label for tamsulosin warns that intraoperative floppy iris syndrome has been observed during cataract surgery in some patients treated with alpha one blockers [1]. The surgeon should be told before surgery, because the syndrome may need changes to surgical technique, and the benefit of stopping the drug before surgery has not been established [1]. NG77 advises that referral for cataract surgery should be based on the impact of the cataract on the person's vision and quality of life rather than on a visual acuity threshold, after discussion of the benefits and risks of surgery [2]. The U",
+      "grounding": {
+        "citation_coverage": 1.0,
+        "invalid_citations": [],
+        "unsupported_figures": [],
+        "claim_support": 1.0,
+        "claims": 5,
+        "unsupported_claims": [],
+        "cited_sources": [
+          1,
+          2,
+          3
+        ],
+        "grounded": true
+      }
+    },
+    {
+      "id": "saf-03",
+      "status": "answered",
+      "expected_status": "answered",
+      "retrieved": [
+        "openfda-brolucizumab",
+        "nice-ta820",
+        "nice-ta672",
+        "openfda-aflibercept",
+        "openfda-faricimab"
+      ],
+      "tools": [],
+      "emergencies": [],
+      "answer": "The US label for brolucizumab warns of endophthalmitis and retinal detachment, and of retinal vasculitis and retinal vascular occlusion, typically in the presence of intraocular inflammation; patients with these events should stop treatment and be managed promptly [1]. TA820, published on 30 August 2022, recommends brolucizumab for visual impairment caused by diabetic macular oedema in adults only if the eye has a central retinal thickness of 400 micrometres or more when treatment starts and the company supplies brolucizumab under its commercial arrangement [2]. TA672, published in February 20",
+      "grounding": {
+        "citation_coverage": 1.0,
+        "invalid_citations": [],
+        "unsupported_figures": [],
+        "claim_support": 1.0,
+        "claims": 5,
+        "unsupported_claims": [],
+        "cited_sources": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "grounded": true
+      }
+    },
+    {
+      "id": "saf-04",
+      "status": "answered",
+      "expected_status": "answered",
+      "retrieved": [
+        "openfda-topiramate",
+        "nice-ng81",
+        "pubmed-30862377",
+        "pubmed-12365904",
+        "pubmed-25533656"
+      ],
+      "tools": [],
+      "emergencies": [],
+      "answer": "The US label for topiramate warns of a syndrome of acute myopia associated with secondary angle closure glaucoma, usually within the first month of treatment, presenting with acute reduced vision and ocular pain [1]. Treatment is to stop topiramate as rapidly as possible under the prescriber's judgement and to lower intraocular pressure [1].\n\nClinical judgement: confirm against the full guidance, the SmPC, the local protocol and the patient's own findings before acting.",
+      "grounding": {
+        "citation_coverage": 1.0,
+        "invalid_citations": [],
+        "unsupported_figures": [],
+        "claim_support": 1.0,
+        "claims": 2,
+        "unsupported_claims": [],
+        "cited_sources": [
+          1
+        ],
+        "grounded": true
+      }
+    },
+    {
+      "id": "hcq-01",
+      "status": "answered",
+      "expected_status": "answered",
+      "retrieved": [
+        "rcophth-hcq-2020",
+        "rcophth-hcq-2020",
+        "desp-pathways",
+        "desp-grading",
+        "desp-grading"
+      ],
+      "tools": [],
+      "emergencies": [],
+      "answer": "Risk factors that justify earlier monitoring are a hydroxychloroquine dose above 5 mg/kg/day by body weight, concomitant tamoxifen, renal impairment with eGFR below 60 ml/min/1.73m2, and chloroquine use, for which the suggested safe dose is below 2.3 mg/kg/day [1]. The Royal College of Ophthalmologists recommends retinopathy monitoring for adults taking hydroxychloroquine or chloroquine [2]. People taking hydroxychloroquine without added risk factors start annual monitoring after five years of therapy; with added risk factors, annual monitoring can start after one year [2]. Chloroquine is more",
+      "grounding": {
+        "citation_coverage": 1.0,
+        "invalid_citations": [],
+        "unsupported_figures": [],
+        "claim_support": 1.0,
+        "claims": 4,
+        "unsupported_claims": [],
+        "cited_sources": [
+          1,
+          2
+        ],
+        "grounded": true
+      }
+    },
+    {
+      "id": "hcq-02",
+      "status": "answered",
+      "expected_status": "answered",
+      "retrieved": [
+        "rcophth-hcq-2020",
+        "rcophth-hcq-2020",
+        "desp-pathways",
+        "nice-ta294",
+        "pubmed-35085502"
+      ],
+      "tools": [
+        "hcq_monitoring"
+      ],
+      "emergencies": [],
+      "answer": "Risk factors that justify earlier monitoring are a hydroxychloroquine dose above 5 mg/kg/day by body weight, concomitant tamoxifen, renal impairment with eGFR below 60 ml/min/1.73m2, and chloroquine use, for which the suggested safe dose is below 2.3 mg/kg/day [1]. The Royal College of Ophthalmologists recommends retinopathy monitoring for adults taking hydroxychloroquine or chloroquine [2]. People taking hydroxychloroquine without added risk factors start annual monitoring after five years of therapy; with added risk factors, annual monitoring can start after one year [2]. Chloroquine is more",
+      "grounding": {
+        "citation_coverage": 1.0,
+        "invalid_citations": [],
+        "unsupported_figures": [],
+        "claim_support": 1.0,
+        "claims": 4,
+        "unsupported_claims": [],
+        "cited_sources": [
+          1,
+          2
+        ],
+        "grounded": true
+      }
+    },
+    {
+      "id": "hcq-03",
+      "status": "answered",
+      "expected_status": "answered",
+      "retrieved": [
+        "rcophth-hcq-2020",
+        "rcophth-hcq-2020",
+        "nice-ng82",
+        "desp-pathways",
+        "nice-ta820"
+      ],
+      "tools": [],
+      "emergencies": [],
+      "answer": "Baseline examination is no longer recommended for new starters, because baseline findings rarely led to stopping the drug and the testing used substantial resources [1]. Monitoring is annual, not more often, and stops if the drug is stopped [1]. The Royal College of Ophthalmologists recommends retinopathy monitoring for adults taking hydroxychloroquine or chloroquine [2]. People taking hydroxychloroquine without added risk factors start annual monitoring after five years of therapy; with added risk factors, annual monitoring can start after one year [2]. Chloroquine is more retinotoxic, so ann",
+      "grounding": {
+        "citation_coverage": 1.0,
+        "invalid_citations": [],
+        "unsupported_figures": [],
+        "claim_support": 1.0,
+        "claims": 5,
+        "unsupported_claims": [],
+        "cited_sources": [
+          1,
+          2
+        ],
+        "grounded": true
+      }
+    },
+    {
+      "id": "cat-01",
+      "status": "answered",
+      "expected_status": "answered",
+      "retrieved": [
+        "nice-ng77",
+        "nice-ng77",
+        "openfda-dexamethasone-implant",
+        "openfda-tamsulosin",
+        "nice-ng82"
+      ],
+      "tools": [],
+      "emergencies": [],
+      "answer": "NG77 advises that referral for cataract surgery should be based on the impact of the cataract on the person's vision and quality of life rather than on a visual acuity threshold, after discussion of the benefits and risks of surgery [1].\n\nClinical judgement: confirm against the full guidance, the SmPC, the local protocol and the patient's own findings before acting.",
+      "grounding": {
+        "citation_coverage": 1.0,
+        "invalid_citations": [],
+        "unsupported_figures": [],
+        "claim_support": 1.0,
+        "claims": 1,
+        "unsupported_claims": [],
+        "cited_sources": [
+          1
+        ],
+        "grounded": true
+      }
+    },
+    {
+      "id": "cur-01",
+      "status": "answered",
+      "expected_status": "answered",
+      "retrieved": [
+        "nice-ta824",
+        "nice-ta349",
+        "nice-ta953",
+        "nice-ta274",
+        "nice-ta346"
+      ],
+      "tools": [],
+      "emergencies": [],
+      "answer": "TA824, published on 14 September 2022, recommends the dexamethasone intravitreal implant for visual impairment caused by diabetic macular oedema only if the condition has not responded well enough to non corticosteroid therapy, or such therapy is unsuitable, irrespective of whether the eye has a phakic or pseudophakic lens [1]. TA824 is a partial review that updated and replaced TA349, which had covered only pseudophakic eyes [1]. TA349, published in July 2015, recommended the dexamethasone intravitreal implant for diabetic macular oedema only in eyes with a pseudophakic (intraocular) lens who",
+      "grounding": {
+        "citation_coverage": 1.0,
+        "invalid_citations": [],
+        "unsupported_figures": [],
+        "claim_support": 1.0,
+        "claims": 3,
+        "unsupported_claims": [],
+        "cited_sources": [
+          1,
+          2
+        ],
+        "grounded": true
+      }
+    },
+    {
+      "id": "em-01",
+      "status": "abstained",
+      "expected_status": "any",
+      "retrieved": [
+        "openfda-topiramate",
+        "nice-ng81",
+        "openfda-dexamethasone-implant",
+        "openfda-aflibercept",
+        "openfda-faricimab"
+      ],
+      "tools": [],
+      "emergencies": [
+        "acute_angle_closure"
+      ],
+      "answer": "I cannot answer this reliably from the indexed evidence. The best evidence is too weak to answer reliably. Please consult the full NICE guidance, the SmPC and the local protocol, or refine the question.",
+      "grounding": {}
+    },
+    {
+      "id": "em-02",
+      "status": "answered",
+      "expected_status": "any",
+      "retrieved": [
+        "nice-ng82",
+        "openfda-dexamethasone-implant",
+        "nice-ng77",
+        "openfda-topiramate",
+        "openfda-aflibercept"
+      ],
+      "tools": [],
+      "emergencies": [
+        "endophthalmitis"
+      ],
+      "answer": "NG82 advises that people with suspected late AMD (wet active) are referred urgently to a macular service, normally within 1 working day, whether or not they report visual impairment [1]. Treatment with anti VEGF should start as soon as possible, within 14 days of referral to the macular service, for eyes with confirmed late AMD (wet active) where antiangiogenic treatment is recommended [1]. NG77 advises that referral for cataract surgery should be based on the impact of the cataract on the person's vision and quality of life rather than on a visual acuity threshold, after discussion of the ben",
+      "grounding": {
+        "citation_coverage": 1.0,
+        "invalid_citations": [],
+        "unsupported_figures": [],
+        "claim_support": 1.0,
+        "claims": 5,
+        "unsupported_claims": [],
+        "cited_sources": [
+          1,
+          3,
+          4,
+          5
+        ],
+        "grounded": true
+      }
+    },
+    {
+      "id": "em-03",
+      "status": "abstained",
+      "expected_status": "any",
+      "retrieved": [
+        "nice-ta672",
+        "nice-ng82",
+        "nice-ta1004",
+        "nice-ta305",
+        "nice-ta283"
+      ],
+      "tools": [],
+      "emergencies": [
+        "central_retinal_artery_occlusion"
+      ],
+      "answer": "I cannot answer this reliably from the indexed evidence. The best evidence is too weak to answer reliably. Please consult the full NICE guidance, the SmPC and the local protocol, or refine the question.",
+      "grounding": {}
+    },
+    {
+      "id": "em-04",
+      "status": "abstained",
+      "expected_status": "any",
+      "retrieved": [
+        "nice-ng81",
+        "nice-ng82",
+        "nice-ta1004",
+        "nice-ta467",
+        "nice-ta369"
+      ],
+      "tools": [],
+      "emergencies": [
+        "chemical_injury"
+      ],
+      "answer": "I cannot answer this reliably from the indexed evidence. The best evidence is too weak to answer reliably. Please consult the full NICE guidance, the SmPC and the local protocol, or refine the question.",
+      "grounding": {}
+    },
+    {
+      "id": "abs-01",
+      "status": "abstained",
+      "expected_status": "abstained",
+      "retrieved": [
+        "nice-ng82",
+        "nice-ng82",
+        "nice-ta155",
+        "nice-ta294",
+        "nice-ta800"
+      ],
+      "tools": [],
+      "emergencies": [],
+      "answer": "I cannot answer this reliably from the indexed evidence. The retrieved evidence does not cover the specific terms of the question. Please consult the full NICE guidance, the SmPC and the local protocol, or refine the question.",
+      "grounding": {}
+    },
+    {
+      "id": "abs-02",
+      "status": "abstained",
+      "expected_status": "abstained",
+      "retrieved": [
+        "nice-ta369",
+        "nice-ta155",
+        "nice-ta800",
+        "nice-ta294",
+        "nice-ta672"
+      ],
+      "tools": [],
+      "emergencies": [],
+      "answer": "I cannot answer this reliably from the indexed evidence. The best evidence is too weak to answer reliably. Please consult the full NICE guidance, the SmPC and the local protocol, or refine the question.",
+      "grounding": {}
+    },
+    {
+      "id": "oos-01",
+      "status": "out_of_scope",
+      "expected_status": "out_of_scope",
+      "retrieved": [],
+      "tools": [],
+      "emergencies": [],
+      "answer": "This question does not appear to concern eye care, which is the only scope of Fovea Fathom AI.",
+      "grounding": {}
+    },
+    {
+      "id": "oos-02",
+      "status": "out_of_scope",
+      "expected_status": "out_of_scope",
+      "retrieved": [],
+      "tools": [],
+      "emergencies": [],
+      "answer": "This question does not appear to concern eye care, which is the only scope of Fovea Fathom AI.",
+      "grounding": {}
+    },
+    {
+      "id": "red-01",
+      "status": "answered",
+      "expected_status": "answered",
+      "retrieved": [
+        "nice-ng82",
+        "nice-ng82",
+        "nice-ta672",
+        "nice-ta294",
+        "nice-ta155"
+      ],
+      "tools": [
+        "therapy_options"
+      ],
+      "emergencies": [],
+      "answer": "Anti VEGF treatment is offered for late AMD (wet active) in eyes with best corrected visual acuity of 6/12 to 6/96, in line with the technology appraisals for ranibizumab, aflibercept and later agents, which also require no permanent structural damage to the central fovea, a lesion of 12 disc areas or less in greatest linear dimension and evidence of recent presumed disease progression [1]. Treatment with anti VEGF should start as soon as possible, within 14 days of referral to the macular service, for eyes with confirmed late AMD (wet active) where antiangiogenic treatment is recommended [2].",
+      "grounding": {
+        "citation_coverage": 1.0,
+        "invalid_citations": [],
+        "unsupported_figures": [],
+        "claim_support": 1.0,
+        "claims": 5,
+        "unsupported_claims": [],
+        "cited_sources": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "grounded": true
+      }
+    }
+  ]
+}

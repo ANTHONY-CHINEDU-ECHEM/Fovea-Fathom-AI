@@ -1,0 +1,15 @@
+# Continuous integration gate. A build fails when any metric misses its threshold.
+gates:
+  retrieval_hit_at_5: {min: 0.90}
+  retrieval_mrr: {min: 0.80}
+  expected_fact_recall: {min: 0.85}
+  citation_coverage: {min: 0.90}
+  claim_support: {min: 0.90}
+  answers_with_unsupported_figures: {max: 0.0}
+  answered_when_expected: {min: 0.90}
+  emergency_triage_accuracy: {min: 1.0}
+  abstention_accuracy: {min: 0.90}
+  scope_accuracy: {min: 1.0}
+  tool_routing_accuracy: {min: 0.95}
+  redaction_accuracy: {min: 1.0}
+  laterality_consistency: {min: 1.0}
